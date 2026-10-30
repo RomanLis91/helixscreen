@@ -154,6 +154,30 @@ build_fixture_repo() {
     rm -rf "$tmp"
 }
 
+@test "installed tool dependencies are linked from the main tree, the telemetry worker's included" {
+    tmp="$(cd "$(mktemp -d)" && pwd -P)"
+    export CCACHE_CONFIGPATH="$tmp/ccache.conf"
+    build_fixture_repo "$tmp"
+    mkdir -p "$tmp/main/server/telemetry-worker"
+    echo '{}' > "$tmp/main/server/telemetry-worker/package.json"
+    git -C "$tmp/main" add server && git -C "$tmp/main" commit -qm worker
+    mkdir -p "$tmp/main/node_modules" "$tmp/main/.venv" "$tmp/main/server/telemetry-worker/node_modules"
+    run bash "$tmp/main/scripts/setup-worktree.sh" --base HEAD --no-build feat/deps
+    [ "$status" -eq 0 ] || { echo "$output" >&2; return 1; }
+
+    wt="$tmp/main/.worktrees/deps"
+    for rel in node_modules .venv server/telemetry-worker/node_modules; do
+        [ -L "$wt/$rel" ] || { echo "$rel is not a symlink" >&2; return 1; }
+        [ "$(readlink "$wt/$rel")" = "$tmp/main/$rel" ] || { echo "$rel -> $(readlink "$wt/$rel")" >&2; return 1; }
+    done
+    rm -rf "$tmp"
+}
+
+@test "the usage text names the telemetry worker's node_modules link" {
+    run bash "$SCRIPT" --help
+    [[ "$output" == *"telemetry worker's node_modules"* ]] || { echo "$output" >&2; return 1; }
+}
+
 @test "lib/lua is a private checkout, not a symlink into the main tree" {
     tmp="$(mktemp -d)"
     export CCACHE_CONFIGPATH="$tmp/ccache.conf"
@@ -356,6 +380,59 @@ PATCH
     run cat "$main/lib/lvgl/src/lv_thing.c"
     [ "$output" = "int v = 3;" ] || { echo "main tree was rewritten: $output" >&2; return 1; }
     [ -e "$main/lib/lvgl/src/lv_new.c" ] || { echo "main tree lost its file" >&2; return 1; }
+    rm -rf "$tmp"
+}
+
+@test "a private checkout copied from an unpatched main tree gets this branch's patches" {
+    # Matching patches/ says the main tree SHOULD carry the patches, not that its
+    # checkout does. A pristine main checkout copies into a pristine private one,
+    # and only the marker check notices.
+    tmp="$(mktemp -d)"
+    export CCACHE_CONFIGPATH="$tmp/ccache.conf"
+    build_fixture_repo "$tmp"
+    main="$tmp/main"
+    cat > "$main/scripts/check_patch_markers.py" <<'PY'
+import sys
+from pathlib import Path
+lvgl = Path(sys.argv[sys.argv.index("--lvgl") + 1])
+sys.exit(0 if "int v = 9;" in (lvgl / "src/lv_thing.c").read_text() else 1)
+PY
+    printf 'reapply-patches:\n\t@echo "int v = 9;" > lib/lvgl/src/lv_thing.c\n' > "$main/Makefile"
+    git -C "$main" add Makefile scripts/check_patch_markers.py
+    git -C "$main" commit -qm "marker stub"
+
+    run bash "$main/scripts/setup-worktree.sh" --base HEAD --no-build feat/unpatched
+    [ "$status" -eq 0 ] || { echo "$output" >&2; return 1; }
+    [[ "$output" == *"missing patches"* ]] || { echo "$output" >&2; return 1; }
+    run cat "$main/.worktrees/unpatched/lib/lvgl/src/lv_thing.c"
+    [ "$output" = "int v = 9;" ] || { echo "copy left unpatched: $output" >&2; return 1; }
+    rm -rf "$tmp"
+}
+
+@test "a cloned contributors header is kept only when its inputs match this branch" {
+    # The header is generated from CONTRIBUTORS.txt by gen-contributors.sh. A
+    # clone made from another branch's inputs can read newer than this branch's
+    # and survive the build.
+    tmp="$(mktemp -d)"
+    export CCACHE_CONFIGPATH="$tmp/ccache.conf"
+    build_fixture_repo "$tmp"
+    main="$tmp/main"
+    echo "alice" > "$main/CONTRIBUTORS.txt"
+    git -C "$main" add CONTRIBUTORS.txt
+    git -C "$main" commit -qm contributors
+    git -C "$main" branch older
+    echo "bob" >> "$main/CONTRIBUTORS.txt"
+    git -C "$main" commit -qam "another contributor"
+    mkdir -p "$main/build/generated"
+    echo "kContributors main" > "$main/build/generated/contributors.h"
+
+    run bash "$main/scripts/setup-worktree.sh" --base HEAD --no-build feat/same
+    [ "$status" -eq 0 ] || { echo "$output" >&2; return 1; }
+    [ -f "$main/.worktrees/same/build/generated/contributors.h" ] || { echo "dropped a matching header" >&2; return 1; }
+
+    run bash "$main/scripts/setup-worktree.sh" --base older --no-build feat/other
+    [ "$status" -eq 0 ] || { echo "$output" >&2; return 1; }
+    [ ! -e "$main/.worktrees/other/build/generated/contributors.h" ] || { echo "kept another branch's header" >&2; return 1; }
     rm -rf "$tmp"
 }
 
@@ -723,4 +800,13 @@ mark_tree() {
     [ ! -e "$main/.worktrees/pin/build/obj/lvgl_obj.o" ] \
         || fail "objects built against another lvgl revision were seeded"
     rm -rf "$tmp"
+}
+
+@test "the initial build picks gmake only on macOS" {
+    # On Linux `make` may be the jobpool shim; /usr/bin/gmake bypasses it and
+    # the worktree's cold build runs its own -j beside every pooled build.
+    run bash -c "sed -n '/Step 10: Build/,/Build successful/p' '$SCRIPT'"
+    lacks 'command -v gmake ||' "$output"
+    contains 'MAKE_BIN="gmake"' "$output"
+    contains '"$(uname -s)" == Darwin' "$output"
 }

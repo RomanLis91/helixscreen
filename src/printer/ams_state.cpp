@@ -545,6 +545,12 @@ bool AmsState::is_available() const {
     return primary && primary->presents_filament_system();
 }
 
+bool AmsState::filament_hardware_absent() const {
+    assert_main_thread();
+    const auto primary = system_info(0);
+    return primary && primary->external_spool_only;
+}
+
 void AmsState::set_moonraker_api(IMoonrakerAPI* api) {
     assert_main_thread();
     api_ = api;
@@ -576,6 +582,7 @@ void AmsState::sync_backend(int backend_index) {
 
     const auto snapshot = read_system_info(backend_index);
     const AmsSystemInfo& info = *snapshot;
+    registry_.ensure_sinks(backend_index, info.total_slots);
     auto& subs = secondary_slot_subjects_[sec_idx];
 
     for (int i = 0; i < std::min(info.total_slots, subs.slot_count); ++i) {
@@ -637,6 +644,7 @@ void AmsState::sync_from_backend() {
     const auto snapshot = read_system_info(0);
     const AmsSystemInfo& info = *snapshot;
 
+    registry_.ensure_sinks(0, info.total_slots);
     sync_system_subjects(info);
     sync_tool_topology(backend, info);
     sync_shared_heater(backend, info);

@@ -167,6 +167,25 @@ The submitted lambda runs on a worker thread — callbacks invoked from it are o
 
 **Do NOT:** spawn a raw `std::thread` for HTTP work. If `HttpExecutor::fast()/slow()` don't fit the shape you need, discuss — adding a new lane is preferable to reintroducing unbounded spawning.
 
+### Moonraker API Key
+
+A Moonraker with `force_logins` refuses every request without a credential, trusted address or not, and accepts the printer's API key in an `X-Api-Key` header. The key is the active printer's `moonraker_api_key` setting.
+
+| Piece | Role |
+|-------|------|
+| `include/moonraker_auth.h` | The pure rules: `set_credential()` records the active printer's credential, `key_for()` / `key_for_url()` answer what key a host:port gets, `header_action()` decides Set / Leave / Remove for a request's header. Built for the desktop and the ESP32 firmware alike |
+| `src/application/printer_retarget.cpp#connect_printer` | Records `active_printer_credential()`, built from the same host and port the connection URL uses, before every connect (startup, printer switch, Change Host) |
+| `src/api/moonraker_auth_http.cpp` | Installs `apply_to_request()` as libhv's request hook (`patches/libhv-http-request-hook.patch`), so every libhv HTTP request, sync, async or upload, built from any URL, gets the key when it is bound for that printer |
+| `MoonrakerClient::connect()` | Adds the header to the WebSocket upgrade, which libhv sends without the hook |
+| `EspMoonrakerClient::create_transport()` | The firmware's WebSocket upgrade, through `esp_websocket_client_config_t::headers` |
+| `EspHttpLane::run_one()` | The firmware's HTTP file reads, through `esp_http_client_set_header()` |
+
+**The key goes only to the host and port saved with it.** Moonraker refuses a wrong key even from a trusted address, so a key sent to a different printer (the connection wizard testing a typed address, a CLI override) would break a connection that works without one. Change Host moves a printer entry to a new address and keeps its key, since it is still that printer. A synchronous redirect re-runs the hook, so the key comes off at another host; libhv's async client follows redirects without the hook, and nothing in the app sends HTTP through it. An `X-Api-Key` another caller set for its own service (telemetry) is left alone. The WebSocket upgrade request is created once per `MoonrakerClient` and reused by every connect, so `connect()` erases the previous key before it sets the current one.
+
+**Entering the key.** The Change Host dialog (`src/ui/ui_change_host_modal.cpp`) carries a masked key field beside the host and port, reached from Settings > Connection's Host and API Key rows; Save writes the key with `set_active_printer_api_key()` and reconnects through `connect_printer`. The connection wizard shows the same field when its test answers 401, and records the typed key for the address under test only (`WizardConnectionStep::connect_confirmed`). Test Connection sends the key in its `/server/info` probe, so it tells "needs a key" from "rejected this key" (`MoonrakerConnectionTest::Result::login_required`, `key_sent`). A key that is not 32 hex digits is refused before any request (`moonraker_auth::is_plausible_api_key`).
+
+**A refused login.** When `server.connection.identify` fails with Unauthorized, `MoonrakerDiscoverySequence::stop_for_refused_login` stops discovery, marks `moonraker_auth::unauthorized()` and emits one `LOGIN_REFUSED` event per credential (`set_credential()` clears the mark). The manager shows it as a Login Required prompt whose button opens the key field; the request tracker's generic toast and the file-list and PRINT_START-analysis toasts stay quiet while the mark is set, so that message is not buried.
+
 ### Event System
 
 **Location:** `include/moonraker_events.h`
@@ -185,7 +204,8 @@ enum class MoonrakerEventType {
     KLIPPY_SHUTDOWN,      // Klipper firmware entered shutdown state (M112, thermal, error)
     KLIPPY_READY,         // Klipper firmware ready
     DISCOVERY_FAILED,     // Printer discovery failed
-    REQUEST_TIMEOUT       // JSON-RPC request timed out
+    REQUEST_TIMEOUT,      // JSON-RPC request timed out
+    LOGIN_REFUSED         // Moonraker refused this client's login (once per credential)
 };
 
 struct MoonrakerEvent {

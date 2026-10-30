@@ -950,9 +950,21 @@ fi
 # link — back on the critical path of an otherwise no-op build.
 MAIN_GEN="$MAIN_TREE/build/generated"
 if [[ -d "$MAIN_GEN" && ! -d "$WORKTREE_PATH/build/generated" ]]; then
+    mkdir -p "$WORKTREE_PATH/build"
     cp -Rc "$MAIN_GEN" "$WORKTREE_PATH/build/generated" 2>/dev/null \
         || cp -a "$MAIN_GEN" "$WORKTREE_PATH/build/generated"
     echo -e "  build/generated: ${GREEN}cloned${RESET}"
+    # The clone describes the main tree's branch. When this branch's generator
+    # or its input differs, the copied header can still read newer than both and
+    # make keeps it, compiling another branch's contributor table here.
+    for input in CONTRIBUTORS.txt scripts/gen-contributors.sh; do
+        if [[ -e "$MAIN_TREE/$input" || -e "$WORKTREE_PATH/$input" ]] \
+           && ! cmp -s "$MAIN_TREE/$input" "$WORKTREE_PATH/$input"; then
+            rm -f "$WORKTREE_PATH/build/generated/contributors.h"
+            echo -e "  build/generated/contributors.h: ${YELLOW}dropped ($input differs from the main tree's)${RESET}"
+            break
+        fi
+    done
 fi
 
 # Step 3c: Copy compile_commands.json for clangd support
@@ -1419,6 +1431,16 @@ if [[ "$PRIVATE_SUBMODULES_NEED_PATCHES" != "true" ]] \
     PRIVATE_SUBMODULES_NEED_PATCHES=true
     echo -e "${YELLOW}patches/ differs from the main tree's${RESET}"
 fi
+# Matching patches/ proves only that the main tree SHOULD carry them. Its own
+# checkout can be pristine (never built, or reset since), and a copy of it then
+# compiles as an unpatched submodule. The marker table greps for each patch's
+# effect, so it answers what the copy actually holds, without a build.
+if [[ "$PRIVATE_SUBMODULES_NEED_PATCHES" != "true" && -f scripts/check_patch_markers.py ]] \
+   && ! python3 scripts/check_patch_markers.py --mk mk/patches.mk --tsv mk/patch-markers.tsv \
+        --patch-dir patches --lvgl lib/lvgl --libhv lib/libhv --lua lib/lua >/dev/null 2>&1; then
+    PRIVATE_SUBMODULES_NEED_PATCHES=true
+    echo -e "${YELLOW}the private submodules copied from the main tree are missing patches${RESET}"
+fi
 if [[ "$PRIVATE_SUBMODULES_NEED_PATCHES" == "true" ]]; then
     echo -e "${CYAN}Applying this branch's patches to the private submodules...${RESET}"
     unapply_main_tree_patches
@@ -1440,8 +1462,13 @@ if [[ "$NO_BUILD" == "false" ]]; then
     echo -e "${BOLD}${CYAN}Running initial build...${RESET}"
     cd "$WORKTREE_PATH"
     # Homebrew installs GNU make as gmake; Apple's /usr/bin/make is 3.81 and
-    # the Makefile hard-errors below 4.2.
-    MAKE_BIN="$(command -v gmake || command -v make)"
+    # the Makefile hard-errors below 4.2. On Linux plain `make` stays: there it
+    # may be the jobpool shim, which `gmake` would bypass.
+    if [[ "$(uname -s)" == Darwin ]] && command -v gmake >/dev/null 2>&1; then
+        MAKE_BIN="gmake"
+    else
+        MAKE_BIN="make"
+    fi
     if "$MAKE_BIN" -j; then
         echo ""
         echo -e "${GREEN}${BOLD}✓ Build successful!${RESET}"

@@ -75,7 +75,8 @@ make land-gate                       # THE pre-landing gate: ONCE per batch, bef
 #   The C++ suite once, in CI's 8-shard layout (not the local sweep's 96: CI
 #   never runs that grouping), bats, CI's tests/ui pytest slice (headless), the
 #   moonraker plugin tests, the generated-artefact checks (theme token table,
-#   xml schema + lint-xml, lvgl event codes), and quality-checks.sh: pushing the
+#   xml schema + lint-xml, lvgl event codes), the ESP32 syntax check (needs
+#   docker + the IDF image: thelio/zeus), and quality-checks.sh: pushing the
 #   exact commit it passed skips that sweep. C++ on the test host as
 #   full-test-run's sweep goes; the rest here in parallel; a PASS/FAIL table
 #   with durations at the end. full-test-run alone is NOT a landing gate: it
@@ -297,7 +298,7 @@ What is shared here:
   ```bash
   scripts/helix-claim check worktree:main        # FREE | LIVE | STALE  (exit 1 if LIVE)
   if scripts/helix-claim take device:k2plus deploy --pid $$ --note 192.168.1.50; then  # gate on the exit code; never pipe take
-      trap 'scripts/helix-claim release-if-owned-by $$ device:k2plus' EXIT; make deploy-k2plus; fi
+      trap 'scripts/helix-claim release-if-owned-by $$ device:k2plus' EXIT; make deploy-k2 K2_HOST=192.168.1.50; fi
   scripts/helix-claim take worktree:main edit --session   # owner = this session's `claude` process (--pid auto); errors if none is an ancestor
   scripts/helix-claim take worktree:main edit --ack-red-main   # worktree:main is refused while Build / Code Quality is red on origin/main; fails open without gh; the merge hook always acks
   scripts/helix-claim list                       # everything, with derived liveness

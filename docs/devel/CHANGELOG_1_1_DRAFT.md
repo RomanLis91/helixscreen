@@ -176,7 +176,9 @@ git log --no-merges --oneline 2ad32dc6e..main --not release/1.0
 - **A K2 without a CFS is a single-spool printer (#1904)** - with no CFS attached, the
   multi-filament panels, slot widgets and bypass controls stay out of the way, and the
   Filament panel's Load and Unload run the K2's own external-spool load and its cut and
-  retract. The external spool row says what is loaded.
+  retract. The external spool row says what is loaded. The toolhead filament sensor shows
+  up in Settings > Sensors and can watch for runout. A K2 that has a CFS no longer looks
+  single-spool while its CFS is still answering at boot (#1933).
 - **Icon tiles resize** - the single-icon tiles (power, lock, shutdown, firmware restart,
   LED, network and the rest) scale with their tile instead of staying one fixed size, and
   can be resized for the first time. On most panels they take half-cell steps in width; on
@@ -833,6 +835,17 @@ git log --no-merges --oneline 2ad32dc6e..main --not release/1.0
   Centauri Carbon a browser pairs once with a six-digit code shown on the screen. A small icon on the
   printer shows while someone is driving it remotely. Off by default, and it costs nothing
   while nobody watches. Printers whose firmware already shares the screen keep theirs.
+- **Screen Sharing is per printer** (#1825) - each printer you control keeps its own Share
+  Screen, Allow Remote Control and the new Add to Mainsail/Fluidd Webcams setting, so sharing
+  one printer's screen never lists it among another printer's webcams. With Add to
+  Mainsail/Fluidd Webcams off the screen stays shared at its browser address but no webcam
+  entry is added. A beta that had sharing on keeps it on for the printer that was selected.
+- **WiFi country** - Network Settings shows and sets the radio's country under the WiFi
+  switch, so 5 GHz networks show up in scans before the first connection. The United States,
+  United Kingdom, Germany, Canada, Australia and France are listed first. A country the
+  printer's own system set is remembered, so when a firmware update resets the radio to the
+  restricted worldwide mode, HelixScreen sets it again at the next start and 5 GHz networks
+  reconnect on their own.
 - **Find your printer by searching** (#1028) - first-run printer selection replaces the
   scroll through about 105 machines with a search box, a grid of vendors and a list per
   vendor.
@@ -1121,6 +1134,40 @@ git log --no-merges --oneline 2ad32dc6e..main --not release/1.0
 
 ### Fixed
 
+- **Printers that require a Moonraker login connect** - with `force_logins` enabled,
+  Moonraker refused every request from the screen. HelixScreen now sends the printer's
+  `moonraker_api_key` setting to that printer's Moonraker, over the WebSocket and every HTTP
+  request, and to nothing else.
+- **Enter the Moonraker API key on the screen** - Settings > Connection has an API Key row,
+  and the Change Host dialog a masked key field beside the host and port; saving reconnects
+  with the key at once. The setup wizard shows the field when Test Connection finds a printer
+  that requires a login. A printer that refuses the login now says so once, with a button to
+  the key, instead of a toast for every request it refused.
+- **Pressure advance calibration on a Snapmaker U1 checks the heads first** - with
+  calibration on, a head holding filament with no material set made the printer pause two
+  minutes into the start. The filament check now stops the print before it heats, and
+  offers to set the head to the material the file names in one tap. With calibration off
+  the head prints as it is.
+- **Filament use on a Snapmaker U1 with multiACE comes off the right spool** - what a
+  nozzle fed from an ACE bay extruded was charged to the head's lane instead of the bay's
+  spool, so the bay's remaining weight never went down.
+- **Print Status shows the chamber temperature with the chamber heater off** - the chamber
+  chip appeared only while the chamber heated or was above 50°C, so a QIDI Q2 printing PLA,
+  or a printer with only a chamber sensor, never showed it. It now shows whenever the
+  printer has a chamber.
+- **A print start longer than ten minutes no longer reads as failed** - on printers that run
+  their whole start sequence before answering the start, a long heat soak or chamber wait
+  outlasted the screen's wait for that answer. The screen said "Print did not start" and
+  dropped the heater targets while the printer carried on and printed, with Stop unavailable.
+  The print now stays preparing until the printer reports it, and Stop can cancel it.
+- **The layer count no longer jumps on every travel move** - on printers whose slicer does
+  not report layers, the current layer is worked out from the nozzle height, and each Z-hop
+  bumped it up a few layers and back. A new layer now shows once the nozzle has stayed at
+  that height for a moment, so the count steps forward only when the print really moves up.
+- **K2 pre-print steps** - the Creality K2's preparing checklist no longer marks Purge done
+  while the nozzle is being cleaned. The nozzle clean parks over the purge chute and pushes a
+  little filament to check flow, which read as the purge; the checklist now keeps it under
+  Cleaning nozzle and shows Purge once, after the bed mesh, when the real purge runs.
 - **Closing the printer type warning keeps your type** (#1881) - tapping X on the "printer
   type mismatch" warning now counts as keeping the saved type, like Review > Keep current,
   so it stops coming back on every restart.
@@ -1407,6 +1454,9 @@ git log --no-merges --oneline 2ad32dc6e..main --not release/1.0
 - **K2 Plus: saving config flashed "Printer Shutdown"** during the normal restart.
 - **Two speed and flow code paths were unreachable**, and the overrides now go through one
   clamp rather than three copies of it.
+- **Sliced for a Different Setup named a toolhead the print never uses** - a multi-tool
+  file lists a nozzle for every toolhead, so a different nozzle on an unused one raised the
+  warning. The fit check now judges only the toolheads the file prints with.
 
 **Calibration**
 
@@ -1545,6 +1595,11 @@ git log --no-merges --oneline 2ad32dc6e..main --not release/1.0
   is written to the U1's own filament record, and before resuming a pause (other than a
   runout) a used head with a blank record is filled in from the material HelixScreen knows,
   so Resume is no longer refused with "not edit filament".
+- **The fit check knows which nozzle each head really has** - it read the 0.4 mm the
+  printer's config lists for every head, so a correct job for a 0.6 mm head was warned about
+  and a 0.4 mm job sent to a 0.2 mm head passed. It now reads the size and type the U1
+  reports for each head. A file sliced for the other nozzle type (High Flow or standard)
+  gets a warning with **Start Anyway**.
 
 **Setup and installing**
 

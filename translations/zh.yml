@@ -28,6 +28,7 @@ translations:
   '%d tools': '%d 个工具'
   '%d units': '%d 个单元'
   '%d:%02d left': '剩余 %d:%02d'
+  '%dd %dh': '%d天%d小时'
   '%dh': '%d小时'
   '%dh %02dm': '%d小时%02d分'
   '%dh %dm': '%d小时%d分'
@@ -43,6 +44,7 @@ translations:
   '%s needs filament in %s, which is empty — this print will run out.': '%s 需要耗材，但 %s 为空 —— 此次打印将会耗尽耗材。'
   '%s unsaved': '%s 未保存'
   '%s uses %s, which has filament but no material set — the printer will not start until you set it.': '%s 使用 %s，该位置有耗材但未设置材料 — 设置后打印机才会开始。'
+  '%s uses %s, which has filament but no material set. A calibration this print runs needs it.': '%s 使用 %s，该位置有耗材但未设置材料。本次打印的校准需要它。'
   '%s: %.0fg of %.0fg needed': '%s：%.0fg / 需要 %.0fg'
   '%u layers': '%u 层'
   '%zu events queued': '%zu 个事件已排队'
@@ -127,6 +129,7 @@ translations:
 
   30 minutes: 30 分钟
   30 seconds: 30 秒
+  32 characters, 0-9 and a-f: '32 个字符，0-9 和 a-f'
   3D Maze: 3D 迷宫
   3D Pipes: 3D 管道
   3D View: 3D 视图
@@ -201,6 +204,8 @@ translations:
   'AMS Active: ': 'AMS 已激活: '
   AMS is busy: AMS 正忙
   AMS/MMU system not detected: '未检测到 AMS/MMU 系统'
+  API Key: 'API 密钥'
+  API Key (if Moonraker requires a login): 'API 密钥（如果 Moonraker 要求登录）'
   API not available: API 不可用
   APPEARANCE: 外观
   AUTO FANS: 自动风扇
@@ -239,6 +244,7 @@ translations:
   Add [include helix-plr/*.cfg] to printer.cfg, so a resume reloads the mesh the print started with: 在 printer.cfg 中添加 [include helix-plr/*.cfg]，恢复时重新加载打印开始时的网格
   Add custom filament: 添加自定义耗材
   Add page: '添加页面'
+  Add to Mainsail/Fluidd Webcams: '添加到 Mainsail/Fluidd 摄像头'
   Add to Queue: 添加到队列
   Added: 已添加
   Added to Spoolman: 已添加到 Spoolman
@@ -281,6 +287,7 @@ translations:
   Always show Android navigation bar instead of using gestures: 始终显示 Android 导航栏而不使用手势
   Ambient Transfer: 环境传热
   AmsIdentify: 识别 AMS
+  An API key is 32 characters, each 0-9 or a-f.: 'API 密钥为 32 个字符，每个为 0-9 或 a-f。'
   An accelerometer was detected on your printer.: 在您的打印机上检测到加速度计。
   An app on your network is asking to connect to this printer.: '网络中的某个应用请求连接到此打印机。'
   An error occurred during calibration.: 校准过程中发生错误。
@@ -796,6 +803,7 @@ translations:
   Configure quick buttons and standard macros: 配置快捷按钮和标准宏
   Configure timelapse recording: 配置延时录像
   Configure your printer's cooling fans: 配置打印机的冷却风扇
+  Configured: '已设置'
   Configured LED strip not found: '未找到已配置的 LED 灯带'
   Configured aux fan not found: '未找到已配置的辅助风扇'
   Configured filament sensor not found: '未找到已配置的耗材传感器'
@@ -935,6 +943,7 @@ translations:
   "Could not save the mesh as '{}': {}": "无法将网格保存为 '{}'：{}"
   Could not save the printer image tags: 保存打印机图片标记失败
   Could not set the WiFi country: 无法设置 WiFi 地区
+  'Could not set the material: {}': '无法设置材料：{}'
   Could not skip {}: '无法跳过 {}'
   Could not start Bluetooth discovery: 无法启动蓝牙发现
   Could not update filaments: 无法更新耗材
@@ -1205,6 +1214,7 @@ translations:
   Endless Spool is turned off on this MMU: '此 MMU 上的无限料盘已关闭'
   Endless Spool state unknown: 无限料盘状态未知
   Ensure Happy Hare or AFC is installed and configured: 请确保已安装并配置 Happy Hare 或 AFC
+  Enter API Key: '输入 API 密钥'
   Enter Current PIN: 输入当前 PIN 码
   Enter G-code command...: 输入 G-code 命令...
   Enter New PIN: 输入新 PIN
@@ -2049,6 +2059,7 @@ translations:
   Linear rails interval: '直线导轨间隔'
   Link Spools from Tags: '通过标签关联料盘'
   Link a slot to the Spoolman spool its tag names: '将槽位关联到其标签指定的 Spoolman 料盘'
+  List the shared screen with this printer's webcams: '在此打印机的摄像头列表中显示共享屏幕'
   Listen to all theme sounds: 试听所有主题声音
   Live Z-offset, with baby steps and Save: 实时 Z 偏移，支持微调与保存
   Live view from your webcam: 摄像头实时画面
@@ -2099,6 +2110,7 @@ translations:
   Lock the screen with your PIN: 用 PIN 码锁定屏幕
   Locked during print: 打印期间锁定
   Log Level: 日志级别
+  Login Required: '需要登录'
   Logs: 日志
   Long Press Time: '长按时间'
   'Long-press any tile to enter edit mode — rearrange, resize, remove, or add widgets, and add extra pages for your preferred layout.': 长按任意磁贴进入编辑模式 — 重新排列、调整大小、移除或添加小组件，并为您喜欢的布局添加额外页面。
@@ -2254,11 +2266,14 @@ translations:
   Monitoring: 监控中
   Month: 月
   Moonraker: Moonraker
+  Moonraker at {} rejected the API key.: '{} 上的 Moonraker 拒绝了 API 密钥。'
+  Moonraker at {} requires an API key.: '{} 上的 Moonraker 需要 API 密钥。'
   Moonraker has no G-code folder.: "Moonraker 没有 G-code 文件夹。"
   ? Moonraker is connected to Spoolman, which tracks your spools and how much filament is left. Browse them on the Spoolman screen.
   : 'Moonraker 已连接 Spoolman,它会记录你的料盘和剩余耗材量。在 Spoolman 界面浏览。'
   Moonraker is not responding at {}. It runs on this printer, so check that the Klipper and Moonraker services started.: Moonraker 在 {} 无响应。它运行在这台打印机上，请检查 Klipper 和 Moonraker 服务是否已启动。
   Moonraker keeps a queue of prints to run one after another. View it in the job queue.: 'Moonraker 维护一个依次执行的打印队列。在任务队列中查看。'
+  Moonraker refused the login: 'Moonraker 拒绝了登录'
   Moonraker restarted but Spoolman not connected. Check server.: Moonraker 已重启但 Spoolman
     未连接。请检查服务器。
   ? "Moonraker restarting...\nWaiting for reconnection..."
@@ -3426,6 +3441,7 @@ translations:
   Session Duration: 会话时长
   Session Start: 会话开始
   'Set ': '设置 '
+  Set %s to %s: '将 %s 设置为 %s'
   Set Active: 设为活动
   Set PIN: 设置 PIN
   Set and watch the bed temperature: 设置并监控热床温度
@@ -3468,6 +3484,7 @@ translations:
   Show temp for: 显示温度
   Show text labels on icon-only home screen widgets: 在仅图标的主屏小组件上显示文字标签
   Show this screen as a webcam in Mainsail and Fluidd: '在 Mainsail 和 Fluidd 中将此屏幕显示为网络摄像头'
+  Show this screen in a web browser: '在网页浏览器中显示此屏幕'
   Show up/down buttons on long lists: 在长列表中显示上/下按钮
   Show whatever curves you last had visible on the full graph.: 显示您上次在完整图表上可见的曲线。
   Showing the 50 newest files. See more in the printer's web UI.: '仅显示最新的 50 个文件。更多请在打印机网页界面查看。'
@@ -3495,6 +3512,8 @@ translations:
   Sleep {} min: '{} 分钟后休眠'
   Sliced colors: 切片颜色
   Sliced for a Different Setup: '为不同配置切片'
+  Sliced for a High Flow nozzle on T{}; the printer has a standard one.: '按 High Flow 喷嘴（T{}）切片；打印机为标准喷嘴。'
+  Sliced for a standard nozzle on T{}; the printer has High Flow.: '按标准喷嘴（T{}）切片；打印机为 High Flow 喷嘴。'
   Sliced for a {:g} mm nozzle on T{}; the printer has {:g} mm.: '按 {:g} mm 喷嘴（T{}）切片；打印机为 {:g} mm。'
   Sliced for {}, not {}.: '为 {} 切片，而不是 {}。'
   Slicer: 切片软件
@@ -4015,6 +4034,8 @@ translations:
   ? This printer looks like a {} ({}% confidence), but it is set up as a {}. A wrong type applies incorrect pre-print options and presets.
   : 此打印机看起来是 {}（置信度 {}%），但当前设置为 {}。错误的类型会应用不正确的打印前选项和预设。
   "This printer's INDX macros are missing: {}": "此打印机的 INDX 宏缺少：{}"
+  This printer's Moonraker rejected its API key. Check the key in Settings > Connection.: '此打印机的 Moonraker 拒绝了其 API 密钥。请在 设置 > 连接 中检查密钥。'
+  This printer's Moonraker requires a login. Add its API key in Settings > Connection.: '此打印机的 Moonraker 要求登录。请在 设置 > 连接 中添加其 API 密钥。'
   This printer's network service controls the WiFi radio: 此打印机的网络服务控制 WiFi 无线模块
   This printer's network service manages saved WiFi networks: 此打印机的网络服务管理已保存的 WiFi 网络
   This printer's screen has not shared a layout: "此打印机的屏幕尚未共享布局"
@@ -4253,6 +4274,7 @@ translations:
   'Up next: {}': '下一个：{}'
   'Up next: {} (+{})': '下一个：{}（+{}）'
   Up to date: 已是最新
+  'Up: %s': '运行时长：%s'
   Update: 更新
   Update Available: 有可用更新
   Update Channel: 更新通道

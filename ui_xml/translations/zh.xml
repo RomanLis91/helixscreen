@@ -28,6 +28,7 @@
   <translation tag="%d-%d" zh="%d-%d"/>
   <translation tag="%d-%d°C" zh="%d-%d°C"/>
   <translation tag="%d:%02d left" zh="剩余 %d:%02d"/>
+  <translation tag="%dd %dh" zh="%d天%d小时"/>
   <translation tag="%dh" zh="%d小时"/>
   <translation tag="%dh %02dm" zh="%d小时%02d分"/>
   <translation tag="%dh %dm" zh="%d小时%d分"/>
@@ -43,6 +44,7 @@
   <translation tag="%s needs filament in %s, which is empty — this print will run out." zh="%s 需要耗材，但 %s 为空 —— 此次打印将会耗尽耗材。"/>
   <translation tag="%s unsaved" zh="%s 未保存"/>
   <translation tag="%s uses %s, which has filament but no material set — the printer will not start until you set it." zh="%s 使用 %s，该位置有耗材但未设置材料 — 设置后打印机才会开始。"/>
+  <translation tag="%s uses %s, which has filament but no material set. A calibration this print runs needs it." zh="%s 使用 %s，该位置有耗材但未设置材料。本次打印的校准需要它。"/>
   <translation tag="%s: %.0fg of %.0fg needed" zh="%s：%.0fg / 需要 %.0fg"/>
   <translation tag="%u layers" zh="%u 层"/>
   <translation tag="%zu events queued" zh="%zu 个事件已排队"/>
@@ -125,6 +127,7 @@
   <translation tag="3. Save the position" zh="3. 保存位置"/>
   <translation tag="30 minutes" zh="30 分钟"/>
   <translation tag="30 seconds" zh="30 秒"/>
+  <translation tag="32 characters, 0-9 and a-f" zh="32 个字符，0-9 和 a-f"/>
   <translation tag="3D Maze" zh="3D 迷宫"/>
   <translation tag="3D Pipes" zh="3D 管道"/>
   <translation tag="3D View" zh="3D 视图"/>
@@ -199,6 +202,8 @@
   <translation tag="AMS Active: " zh="AMS 已激活: "/>
   <translation tag="AMS is busy" zh="AMS 正忙"/>
   <translation tag="AMS/MMU system not detected" zh="未检测到 AMS/MMU 系统"/>
+  <translation tag="API Key" zh="API 密钥"/>
+  <translation tag="API Key (if Moonraker requires a login)" zh="API 密钥（如果 Moonraker 要求登录）"/>
   <translation tag="API not available" zh="API 不可用"/>
   <translation tag="APPEARANCE" zh="外观"/>
   <translation tag="AUTO FANS" zh="自动风扇"/>
@@ -237,6 +242,7 @@
   <translation tag="Add [include helix-plr/*.cfg] to printer.cfg, so a resume reloads the mesh the print started with" zh="在 printer.cfg 中添加 [include helix-plr/*.cfg]，恢复时重新加载打印开始时的网格"/>
   <translation tag="Add custom filament" zh="添加自定义耗材"/>
   <translation tag="Add page" zh="添加页面"/>
+  <translation tag="Add to Mainsail/Fluidd Webcams" zh="添加到 Mainsail/Fluidd 摄像头"/>
   <translation tag="Add to Queue" zh="添加到队列"/>
   <translation tag="Add to Spoolman + label" zh="添加到 Spoolman + 标签"/>
   <translation tag="Added" zh="已添加"/>
@@ -280,6 +286,7 @@
   <translation tag="Always show Android navigation bar instead of using gestures" zh="始终显示 Android 导航栏而不使用手势"/>
   <translation tag="Ambient Transfer" zh="环境传热"/>
   <translation tag="AmsIdentify" zh="识别 AMS"/>
+  <translation tag="An API key is 32 characters, each 0-9 or a-f." zh="API 密钥为 32 个字符，每个为 0-9 或 a-f。"/>
   <translation tag="An accelerometer was detected on your printer." zh="在您的打印机上检测到加速度计。"/>
   <translation tag="An app on your network is asking to connect to this printer." zh="网络中的某个应用请求连接到此打印机。"/>
   <translation tag="An error occurred during calibration." zh="校准过程中发生错误。"/>
@@ -782,6 +789,7 @@
   <translation tag="Configure quick buttons and standard macros" zh="配置快捷按钮和标准宏"/>
   <translation tag="Configure timelapse recording" zh="配置延时录像"/>
   <translation tag="Configure your printer&apos;s cooling fans" zh="配置打印机的冷却风扇"/>
+  <translation tag="Configured" zh="已设置"/>
   <translation tag="Configured LED strip not found" zh="未找到已配置的 LED 灯带"/>
   <translation tag="Configured aux fan not found" zh="未找到已配置的辅助风扇"/>
   <translation tag="Configured filament sensor not found" zh="未找到已配置的耗材传感器"/>
@@ -898,6 +906,7 @@
   <translation tag="Could not save the mesh as &apos;{}&apos;: {}" zh="无法将网格保存为 &apos;{}&apos;：{}"/>
   <translation tag="Could not save the printer image tags" zh="保存打印机图片标记失败"/>
   <translation tag="Could not set the WiFi country" zh="无法设置 WiFi 地区"/>
+  <translation tag="Could not set the material: {}" zh="无法设置材料：{}"/>
   <translation tag="Could not skip {}" zh="无法跳过 {}"/>
   <translation tag="Could not start Bluetooth discovery" zh="无法启动蓝牙发现"/>
   <translation tag="Could not turn the heaters off" zh="无法关闭加热"/>
@@ -1159,6 +1168,7 @@
   <translation tag="Endless Spool is turned off on this MMU" zh="此 MMU 上的无限料盘已关闭"/>
   <translation tag="Endless Spool state unknown" zh="无限料盘状态未知"/>
   <translation tag="Ensure Happy Hare or AFC is installed and configured" zh="请确保已安装并配置 Happy Hare 或 AFC"/>
+  <translation tag="Enter API Key" zh="输入 API 密钥"/>
   <translation tag="Enter Current PIN" zh="输入当前 PIN 码"/>
   <translation tag="Enter G-code command..." zh="输入 G-code 命令..."/>
   <translation tag="Enter New PIN" zh="输入新 PIN"/>
@@ -1972,6 +1982,7 @@
   <translation tag="Linear rails interval" zh="直线导轨间隔"/>
   <translation tag="Link Spools from Tags" zh="通过标签关联料盘"/>
   <translation tag="Link a slot to the Spoolman spool its tag names" zh="将槽位关联到其标签指定的 Spoolman 料盘"/>
+  <translation tag="List the shared screen with this printer&apos;s webcams" zh="在此打印机的摄像头列表中显示共享屏幕"/>
   <translation tag="Listen to all theme sounds" zh="试听所有主题声音"/>
   <translation tag="Live Z-offset, with baby steps and Save" zh="实时 Z 偏移，支持微调与保存"/>
   <translation tag="Live view from your webcam" zh="摄像头实时画面"/>
@@ -2023,6 +2034,7 @@
   <translation tag="Lock the screen with your PIN" zh="用 PIN 码锁定屏幕"/>
   <translation tag="Locked during print" zh="打印期间锁定"/>
   <translation tag="Log Level" zh="日志级别"/>
+  <translation tag="Login Required" zh="需要登录"/>
   <translation tag="Logs" zh="日志"/>
   <translation tag="Long Press Time" zh="长按时间"/>
   <translation tag="Long-press any tile to enter edit mode — rearrange, resize, remove, or add widgets, and add extra pages for your preferred layout." zh="长按任意磁贴进入编辑模式 — 重新排列、调整大小、移除或添加小组件，并为您喜欢的布局添加额外页面。"/>
@@ -2178,10 +2190,13 @@
   <translation tag="Month" zh="月"/>
   <translation tag="Moonraker" zh="Moonraker"/>
   <translation tag="Moonraker answered at {}." zh="Moonraker 在 {} 响应。"/>
+  <translation tag="Moonraker at {} rejected the API key." zh="{} 上的 Moonraker 拒绝了 API 密钥。"/>
+  <translation tag="Moonraker at {} requires an API key." zh="{} 上的 Moonraker 需要 API 密钥。"/>
   <translation tag="Moonraker has no G-code folder." zh="Moonraker 没有 G-code 文件夹。"/>
   <translation tag="Moonraker is connected to Spoolman, which tracks your spools and how much filament is left. Browse them on the Spoolman screen." zh="Moonraker 已连接 Spoolman,它会记录你的料盘和剩余耗材量。在 Spoolman 界面浏览。"/>
   <translation tag="Moonraker is not responding at {}. It runs on this printer, so check that the Klipper and Moonraker services started." zh="Moonraker 在 {} 无响应。它运行在这台打印机上，请检查 Klipper 和 Moonraker 服务是否已启动。"/>
   <translation tag="Moonraker keeps a queue of prints to run one after another. View it in the job queue." zh="Moonraker 维护一个依次执行的打印队列。在任务队列中查看。"/>
+  <translation tag="Moonraker refused the login" zh="Moonraker 拒绝了登录"/>
   <translation tag="Moonraker restarted but Spoolman not connected. Check server." zh="Moonraker 已重启但 Spoolman 未连接。请检查服务器。"/>
   <translation tag="Moonraker restarting...&#10;Waiting for reconnection..." zh="Moonraker 重启中...&#10;等待重新连接..."/>
   <translation tag="Moonraker&apos;s Python is too old for this feature." zh="Moonraker 的 Python 版本太旧，无法使用此功能。"/>
@@ -3314,6 +3329,7 @@
   <translation tag="Session Duration" zh="会话时长"/>
   <translation tag="Session Start" zh="会话开始"/>
   <translation tag="Set " zh="设置 "/>
+  <translation tag="Set %s to %s" zh="将 %s 设置为 %s"/>
   <translation tag="Set Active" zh="设为活动"/>
   <translation tag="Set PIN" zh="设置 PIN"/>
   <translation tag="Set and watch the bed temperature" zh="设置并监控热床温度"/>
@@ -3355,6 +3371,7 @@
   <translation tag="Show temp for" zh="显示温度"/>
   <translation tag="Show text labels on icon-only home screen widgets" zh="在仅图标的主屏小组件上显示文字标签"/>
   <translation tag="Show this screen as a webcam in Mainsail and Fluidd" zh="在 Mainsail 和 Fluidd 中将此屏幕显示为网络摄像头"/>
+  <translation tag="Show this screen in a web browser" zh="在网页浏览器中显示此屏幕"/>
   <translation tag="Show up/down buttons on long lists" zh="在长列表中显示上/下按钮"/>
   <translation tag="Show whatever curves you last had visible on the full graph." zh="显示您上次在完整图表上可见的曲线。"/>
   <translation tag="Showing the 50 newest files. See more in the printer&apos;s web UI." zh="仅显示最新的 50 个文件。更多请在打印机网页界面查看。"/>
@@ -3382,6 +3399,8 @@
   <translation tag="Sleep {} min" zh="{} 分钟后休眠"/>
   <translation tag="Sliced colors" zh="切片颜色"/>
   <translation tag="Sliced for a Different Setup" zh="为不同配置切片"/>
+  <translation tag="Sliced for a High Flow nozzle on T{}; the printer has a standard one." zh="按 High Flow 喷嘴（T{}）切片；打印机为标准喷嘴。"/>
+  <translation tag="Sliced for a standard nozzle on T{}; the printer has High Flow." zh="按标准喷嘴（T{}）切片；打印机为 High Flow 喷嘴。"/>
   <translation tag="Sliced for a {:g} mm nozzle on T{}; the printer has {:g} mm." zh="按 {:g} mm 喷嘴（T{}）切片；打印机为 {:g} mm。"/>
   <translation tag="Sliced for {}, not {}." zh="为 {} 切片，而不是 {}。"/>
   <translation tag="Slicer" zh="切片软件"/>
@@ -3858,6 +3877,8 @@
   <translation tag="This printer has no automatic unload. Cut the filament at the head and pull it out by hand." zh="此打印机没有自动退料功能。请在工具头处剪断耗材，然后用手拉出。"/>
   <translation tag="This printer looks like a {} ({}% confidence), but it is set up as a {}. A wrong type applies incorrect pre-print options and presets." zh="此打印机看起来是 {}（置信度 {}%），但当前设置为 {}。错误的类型会应用不正确的打印前选项和预设。"/>
   <translation tag="This printer&apos;s INDX macros are missing: {}" zh="此打印机的 INDX 宏缺少：{}"/>
+  <translation tag="This printer&apos;s Moonraker rejected its API key. Check the key in Settings &gt; Connection." zh="此打印机的 Moonraker 拒绝了其 API 密钥。请在 设置 &gt; 连接 中检查密钥。"/>
+  <translation tag="This printer&apos;s Moonraker requires a login. Add its API key in Settings &gt; Connection." zh="此打印机的 Moonraker 要求登录。请在 设置 &gt; 连接 中添加其 API 密钥。"/>
   <translation tag="This printer&apos;s network service controls the WiFi radio" zh="此打印机的网络服务控制 WiFi 无线模块"/>
   <translation tag="This printer&apos;s network service manages saved WiFi networks" zh="此打印机的网络服务管理已保存的 WiFi 网络"/>
   <translation tag="This printer&apos;s screen has not shared a layout" zh="此打印机的屏幕尚未共享布局"/>
@@ -4082,6 +4103,7 @@
   <translation tag="Up next: {}" zh="下一个：{}"/>
   <translation tag="Up next: {} (+{})" zh="下一个：{}（+{}）"/>
   <translation tag="Up to date" zh="已是最新"/>
+  <translation tag="Up: %s" zh="运行时长：%s"/>
   <translation tag="Update" zh="更新"/>
   <translation tag="Update Available" zh="有可用更新"/>
   <translation tag="Update Channel" zh="更新通道"/>

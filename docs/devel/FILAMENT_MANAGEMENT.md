@@ -1072,6 +1072,14 @@ of the base profile, and a profile that changes material from its template
 keeps only the temps, range and density it sets itself. Pack types never join
 `orca_library_types`: Orca shows those presets on that vendor's printers only.
 
+A product's `orca_id` is the `filament_id` its profile declares, or the one it
+inherits from a template when no other product inherits that same id. A
+template shared by several products (Elegoo's `PLA @base` under fourteen PLA
+variants) names none of them, so those products carry no `orca_id` and Orca
+matches them by material type. The shipped catalog takes its temps from v2.4.1
+and its `orca_id`s from v2.5.0-beta (`_attribution` says so); a single-tag
+`make regen-filaments` does not reproduce that split.
+
 `assets/filaments.json` is **generated but committed** (same pattern as fonts
 and translations) — cross-compiled targets need the file present without
 running Python/git-clone during the build.
@@ -3215,6 +3223,13 @@ of the primary backend. Ask it, not `get_backend() != nullptr`, `backend_count()
 | Too many tools | `current_fit_machine()` passes `is_available()` |
 | First-run wizard and expected hardware | `WizardAmsIdentifyStep::should_skip()` |
 | Tour | `tour::hardware_has_ams()` |
+| Printer image variant | `src/system/printer_image_manager.cpp#detected_hardware_facts` |
+| Printer manager chips | `src/ui/printer_manager_chips.cpp#gather_capability_chip_facts` |
+
+A sensor a backend claims by name is the printer's own once that backend reports its
+hardware absent: `AmsState::filament_hardware_absent()` (the primary backend's
+`external_spool_only`) feeds `PrinterHardware::is_ams_sensor()`. It is false until the
+backend has reported, so no claim lapses in the window before the first status frame.
 
 Load and Unload are the exception: they still route through the backend, because it owns the
 external-spool scripts.

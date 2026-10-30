@@ -15,6 +15,7 @@
  */
 
 #include "ui_print_preparation_manager.h"
+#include "ui_test_utils.h"
 #include "ui_update_queue.h"
 
 #include "../test_helpers/print_preparation_manager_test_access.h"
@@ -31,8 +32,11 @@
 #include "test_helpers/printer_state_test_access.h"
 
 #include <optional>
+#include <string>
+#include <vector>
 
 #include "../catch_amalgamated.hpp"
+#include "hv/json.hpp"
 
 namespace {
 
@@ -296,10 +300,11 @@ TEST_CASE_METHOD(PreStartGateFixture, "A start sent to the printer marks the pre
     CHECK(state.print_state().preparing_start() == helix::PreparingStart::Accepted);
 }
 
-TEST_CASE_METHOD(PreStartGateFixture, "A refused start clears the sent mark; a lost one keeps it",
-                 "[print_preparation][preparing_cancel]") {
-    // A refusal never reached the printer, so Stop must not cancel there. A
-    // timeout says nothing about whether it did.
+TEST_CASE_METHOD(PreStartGateFixture, "A refused start fails; a lost one stays preparing",
+                 "[print_preparation][preparing_cancel][1898]") {
+    // A refusal never reached the printer, so the start fails and Stop must
+    // not cancel there. A timeout says nothing about whether it did: a start
+    // sequence run inside SDCARD_PRINT_FILE can outlast the RPC ceiling.
     const bool refused = GENERATE(true, false);
     CAPTURE(refused);
     jobs.fail_with = refused ? MoonrakerError::validation_error("printer.print.start", "Spools")
@@ -314,18 +319,28 @@ TEST_CASE_METHOD(PreStartGateFixture, "A refused start clears the sent mark; a l
 
     REQUIRE(jobs.start_print_calls == 1);
     CHECK(state.print_state().preparing_start() ==
-          (refused ? helix::PreparingStart::None : helix::PreparingStart::InFlight));
+          (refused ? helix::PreparingStart::None : helix::PreparingStart::Unanswered));
+    CHECK(completed == refused);
+    if (refused) {
+        CHECK_FALSE(completion_success);
+        CHECK_FALSE(completion_error.empty()); // what the controller retires on
+    }
 }
 
-TEST_CASE_METHOD(PreStartGateFixture, "A start that times out while Stop waits is held, not failed",
-                 "[print_preparation][preparing_cancel]") {
+TEST_CASE_METHOD(PreStartGateFixture,
+                 "A start that times out stays preparing until the printer reports it",
+                 "[print_preparation][preparing_cancel][1898]") {
+    const bool stop_waiting = GENERATE(true, false);
+    CAPTURE(stop_waiting);
     jobs.fail_with = MoonrakerError::timeout("printer.print.start", 600000);
     state.print_state().begin_preparing(helix::PrintJobRef{"part.gcode", "", ""});
     set_busy(false);
 
     manager.start_print("part.gcode", "", []() {}, completion());
     REQUIRE(api->captured_success);
-    state.print_state().note_preparing_cancel_requested(); // Stop while it runs
+    if (stop_waiting) {
+        state.print_state().note_preparing_cancel_requested(); // Stop while it runs
+    }
     api->captured_success();
     drain();
 
@@ -333,6 +348,49 @@ TEST_CASE_METHOD(PreStartGateFixture, "A start that times out while Stop waits i
     CHECK(state.print_state().has_preparing_job());
     CHECK(state.print_state().preparing_start() == helix::PreparingStart::Unanswered);
     CHECK_FALSE(completed); // no failure reported for a start the printer may be running
+
+    // The printer finishes its start sequence and reports the job.
+    state.update_from_status(
+        nlohmann::json{{"print_stats", {{"state", "printing"}, {"filename", "part.gcode"}}}});
+    drain();
+    CHECK_FALSE(state.print_state().has_preparing_job());
+    CHECK(state.print_state().last_preparing_exit() == helix::PreparingExit::Confirmed);
+}
+
+TEST_CASE_METHOD(PreStartGateFixture,
+                 "A start sent with the connection down fails unless Stop waits on it",
+                 "[print_preparation][preparing_cancel][1898]") {
+    // CONNECTION_LOST is also what a start refused for a link that is down
+    // gets: nothing reached Moonraker, so the start fails and says so.
+    const bool stop_waiting = GENERATE(true, false);
+    CAPTURE(stop_waiting);
+    jobs.fail_with = MoonrakerError::connection_lost("printer.print.start");
+    std::vector<std::string> errors;
+    helix::ui::set_test_notification_error_hook(
+        [&errors](const std::string& msg) { errors.push_back(msg); });
+    state.print_state().begin_preparing(helix::PrintJobRef{"part.gcode", "", ""});
+    set_busy(false);
+
+    manager.start_print("part.gcode", "", []() {}, completion());
+    REQUIRE(api->captured_success);
+    if (stop_waiting) {
+        state.print_state().note_preparing_cancel_requested();
+    }
+    api->captured_success();
+    drain();
+    helix::ui::set_test_notification_error_hook(nullptr);
+
+    REQUIRE(jobs.start_print_calls == 1);
+    CHECK(completed == !stop_waiting);
+    if (stop_waiting) {
+        CHECK(state.print_state().preparing_start() == helix::PreparingStart::Unanswered);
+        CHECK(errors.empty());
+        return;
+    }
+    CHECK_FALSE(completion_success);
+    CHECK_FALSE(completion_error.empty()); // what the controller retires Failed on
+    REQUIRE(errors.size() == 1);
+    CHECK(errors[0].rfind("Failed to start print: ", 0) == 0);
 }
 
 // ============================================================================

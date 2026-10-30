@@ -52,6 +52,7 @@
   <translation tag="%d-%d" ru="%d-%d"/>
   <translation tag="%d-%d°C" ru="%d-%d°C"/>
   <translation tag="%d:%02d left" ru="осталось %d:%02d"/>
+  <translation tag="%dd %dh" ru="%d д %d ч"/>
   <translation tag="%dh" ru="%d ч"/>
   <translation tag="%dh %02dm" ru="%d ч %02d мин"/>
   <translation tag="%dh %dm" ru="%d ч %d мин"/>
@@ -70,6 +71,7 @@
   <translation tag="%s needs filament in %s, which is empty — this print will run out." ru="Для %s нужен филамент, но %s пуст — печати не хватит филамента."/>
   <translation tag="%s unsaved" ru="%s не сохранено"/>
   <translation tag="%s uses %s, which has filament but no material set — the printer will not start until you set it." ru="%s использует %s, где есть филамент, но не задан материал — принтер не начнёт печать, пока вы его не зададите."/>
+  <translation tag="%s uses %s, which has filament but no material set. A calibration this print runs needs it." ru="%s использует %s, где есть филамент, но не задан материал. Он нужен для калибровки в этой печати."/>
   <translation tag="%s: %.0fg of %.0fg needed" ru="%s: %.0fг из %.0fг"/>
   <translation tag="%u layers" ru="%u слоя"/>
   <translation tag="%u layers_few" ru="%u слоя"/>
@@ -158,6 +160,7 @@
   <translation tag="3. Save the position" ru="3. Сохраните позицию"/>
   <translation tag="30 minutes" ru="30 минут"/>
   <translation tag="30 seconds" ru="30 секунд"/>
+  <translation tag="32 characters, 0-9 and a-f" ru="32 символа, 0-9 и a-f"/>
   <translation tag="3D Maze" ru="3D лабиринт"/>
   <translation tag="3D Pipes" ru="3D трубы"/>
   <translation tag="3D View" ru="3D вид"/>
@@ -232,6 +235,8 @@
   <translation tag="AMS Active: " ru="AMS активен: "/>
   <translation tag="AMS is busy" ru="AMS занят"/>
   <translation tag="AMS/MMU system not detected" ru="Система AMS/MMU не обнаружена"/>
+  <translation tag="API Key" ru="API-ключ"/>
+  <translation tag="API Key (if Moonraker requires a login)" ru="API-ключ (если Moonraker требует входа)"/>
   <translation tag="API not available" ru="API недоступен"/>
   <translation tag="APPEARANCE" ru="ВНЕШНИЙ ВИД"/>
   <translation tag="AUTO FANS" ru="АВТО ВЕНТИЛЯТОРЫ"/>
@@ -270,6 +275,7 @@
   <translation tag="Add [include helix-plr/*.cfg] to printer.cfg, so a resume reloads the mesh the print started with" ru="Добавляет [include helix-plr/*.cfg] в printer.cfg, чтобы при возобновлении снова загружалась сетка, с которой началась печать"/>
   <translation tag="Add custom filament" ru="Добавить свой филамент"/>
   <translation tag="Add page" ru="Добавить страницу"/>
+  <translation tag="Add to Mainsail/Fluidd Webcams" ru="Добавить в веб-камеры Mainsail/Fluidd"/>
   <translation tag="Add to Queue" ru="Добавить в очередь"/>
   <translation tag="Add to Spoolman + label" ru="Добавить в Spoolman + этикетка"/>
   <translation tag="Added" ru="Добавлено"/>
@@ -313,6 +319,7 @@
   <translation tag="Always show Android navigation bar instead of using gestures" ru="Всегда показывать панель навигации Android вместо жестов"/>
   <translation tag="Ambient Transfer" ru="Теплообмен с окружающей средой"/>
   <translation tag="AmsIdentify" ru="Определить AMS"/>
+  <translation tag="An API key is 32 characters, each 0-9 or a-f." ru="API-ключ состоит из 32 символов, каждый 0-9 или a-f."/>
   <translation tag="An accelerometer was detected on your printer." ru="На вашем принтере обнаружен акселерометр."/>
   <translation tag="An app on your network is asking to connect to this printer." ru="Приложение в вашей сети запрашивает подключение к этому принтеру."/>
   <translation tag="An error occurred during calibration." ru="Во время калибровки произошла ошибка."/>
@@ -824,6 +831,7 @@
   <translation tag="Configure quick buttons and standard macros" ru="Настроить быстрые кнопки и стандартные макросы"/>
   <translation tag="Configure timelapse recording" ru="Настроить запись таймлапса"/>
   <translation tag="Configure your printer&apos;s cooling fans" ru="Настройте вентиляторы охлаждения принтера"/>
+  <translation tag="Configured" ru="Задан"/>
   <translation tag="Configured LED strip not found" ru="Настроенная LED-лента не найдена"/>
   <translation tag="Configured aux fan not found" ru="Настроенный дополнительный вентилятор не найден"/>
   <translation tag="Configured filament sensor not found" ru="Настроенный датчик филамента не найден"/>
@@ -940,6 +948,7 @@
   <translation tag="Could not save the mesh as &apos;{}&apos;: {}" ru="Не удалось сохранить сетку как &apos;{}&apos;: {}"/>
   <translation tag="Could not save the printer image tags" ru="Не удалось сохранить отметки изображения"/>
   <translation tag="Could not set the WiFi country" ru="Не удалось задать страну WiFi"/>
+  <translation tag="Could not set the material: {}" ru="Не удалось задать материал: {}"/>
   <translation tag="Could not skip {}" ru="Не удалось пропустить {}"/>
   <translation tag="Could not start Bluetooth discovery" ru="Не удалось запустить поиск Bluetooth"/>
   <translation tag="Could not turn the heaters off" ru="Не удалось выключить нагреватели"/>
@@ -1201,6 +1210,7 @@
   <translation tag="Endless Spool is turned off on this MMU" ru="Бесконечная катушка отключена на этом MMU"/>
   <translation tag="Endless Spool state unknown" ru="Бесконечная катушка: состояние неизвестно"/>
   <translation tag="Ensure Happy Hare or AFC is installed and configured" ru="Убедитесь, что Happy Hare или AFC установлен и настроен"/>
+  <translation tag="Enter API Key" ru="Ввести API-ключ"/>
   <translation tag="Enter Current PIN" ru="Введите текущий PIN"/>
   <translation tag="Enter G-code command..." ru="Введите команду G-code..."/>
   <translation tag="Enter New PIN" ru="Введите новый PIN"/>
@@ -2017,6 +2027,7 @@
   <translation tag="Linear rails interval" ru="Интервал линейных направляющих"/>
   <translation tag="Link Spools from Tags" ru="Привязывать катушки по меткам"/>
   <translation tag="Link a slot to the Spoolman spool its tag names" ru="Привязывать слот к катушке Spoolman, указанной в его метке"/>
+  <translation tag="List the shared screen with this printer&apos;s webcams" ru="Показывать общий экран среди веб-камер этого принтера"/>
   <translation tag="Listen to all theme sounds" ru="Прослушать все звуки темы"/>
   <translation tag="Live Z-offset, with baby steps and Save" ru="Z-смещение в реальном времени, с подстройкой и сохранением"/>
   <translation tag="Live view from your webcam" ru="Прямая трансляция с веб-камеры"/>
@@ -2068,6 +2079,7 @@
   <translation tag="Lock the screen with your PIN" ru="Заблокировать экран PIN-кодом"/>
   <translation tag="Locked during print" ru="Заблокировано во время печати"/>
   <translation tag="Log Level" ru="Уровень журнала"/>
+  <translation tag="Login Required" ru="Требуется вход"/>
   <translation tag="Logs" ru="Журналы"/>
   <translation tag="Long Press Time" ru="Время долгого нажатия"/>
   <translation tag="Long-press any tile to enter edit mode — rearrange, resize, remove, or add widgets, and add extra pages for your preferred layout." ru="Долгое нажатие на любую плитку переводит в режим редактирования — переставляйте, изменяйте размер, удаляйте или добавляйте виджеты, а также добавляйте дополнительные страницы под свой макет."/>
@@ -2223,10 +2235,13 @@
   <translation tag="Month" ru="Месяц"/>
   <translation tag="Moonraker" ru="Moonraker"/>
   <translation tag="Moonraker answered at {}." ru="Moonraker ответил по адресу {}."/>
+  <translation tag="Moonraker at {} rejected the API key." ru="Moonraker по адресу {} отклонил API-ключ."/>
+  <translation tag="Moonraker at {} requires an API key." ru="Moonraker по адресу {} требует API-ключ."/>
   <translation tag="Moonraker has no G-code folder." ru="У Moonraker нет папки G-code."/>
   <translation tag="Moonraker is connected to Spoolman, which tracks your spools and how much filament is left. Browse them on the Spoolman screen." ru="Moonraker подключен к Spoolman, который учитывает ваши катушки и остаток филамента. Просматривайте их на экране Spoolman."/>
   <translation tag="Moonraker is not responding at {}. It runs on this printer, so check that the Klipper and Moonraker services started." ru="Moonraker не отвечает по адресу {}. Он работает на этом принтере, поэтому проверьте, запущены ли службы Klipper и Moonraker."/>
   <translation tag="Moonraker keeps a queue of prints to run one after another. View it in the job queue." ru="Moonraker ведет очередь печатей, которые выполняются одна за другой. Смотрите ее в очереди заданий."/>
+  <translation tag="Moonraker refused the login" ru="Moonraker отклонил вход"/>
   <translation tag="Moonraker restarted but Spoolman not connected. Check server." ru="Moonraker перезапущен, но Spoolman не подключен. Проверьте сервер."/>
   <translation tag="Moonraker restarting...&#10;Waiting for reconnection..." ru="Moonraker перезапускается...&#10;Ожидание переподключения..."/>
   <translation tag="Moonraker&apos;s Python is too old for this feature." ru="Python в Moonraker слишком старый для этой функции."/>
@@ -3368,6 +3383,7 @@
   <translation tag="Session Duration" ru="Длительность сессии"/>
   <translation tag="Session Start" ru="Начало сессии"/>
   <translation tag="Set " ru="Установить "/>
+  <translation tag="Set %s to %s" ru="Задать для %s материал %s"/>
   <translation tag="Set Active" ru="Сделать активной"/>
   <translation tag="Set PIN" ru="Установить PIN"/>
   <translation tag="Set and watch the bed temperature" ru="Установка и контроль температуры стола"/>
@@ -3409,6 +3425,7 @@
   <translation tag="Show temp for" ru="Показывать темп. для"/>
   <translation tag="Show text labels on icon-only home screen widgets" ru="Показывать текстовые подписи на виджетах главного экрана"/>
   <translation tag="Show this screen as a webcam in Mainsail and Fluidd" ru="Показывать этот экран как веб-камеру в Mainsail и Fluidd"/>
+  <translation tag="Show this screen in a web browser" ru="Показывать этот экран в веб-браузере"/>
   <translation tag="Show up/down buttons on long lists" ru="Показывать кнопки вверх/вниз в длинных списках"/>
   <translation tag="Show whatever curves you last had visible on the full graph." ru="Показывать те кривые, что были видны на полном графике в последний раз."/>
   <translation tag="Showing the 50 newest files. See more in the printer&apos;s web UI." ru="Показаны 50 последних файлов. Остальные - в веб-интерфейсе принтера."/>
@@ -3436,6 +3453,8 @@
   <translation tag="Sleep {} min" ru="Сон через {} мин"/>
   <translation tag="Sliced colors" ru="Цвета из слайсера"/>
   <translation tag="Sliced for a Different Setup" ru="Нарезано для другой конфигурации"/>
+  <translation tag="Sliced for a High Flow nozzle on T{}; the printer has a standard one." ru="Нарезано для сопла High Flow на T{}; у принтера стандартное сопло."/>
+  <translation tag="Sliced for a standard nozzle on T{}; the printer has High Flow." ru="Нарезано для стандартного сопла на T{}; у принтера сопло High Flow."/>
   <translation tag="Sliced for a {:g} mm nozzle on T{}; the printer has {:g} mm." ru="Нарезано для сопла {:g} мм на T{}; у принтера {:g} мм."/>
   <translation tag="Sliced for {}, not {}." ru="Нарезано для {}, а не для {}."/>
   <translation tag="Slicer" ru="Слайсер"/>
@@ -3918,6 +3937,8 @@
   <translation tag="This printer has no automatic unload. Cut the filament at the head and pull it out by hand." ru="У этого принтера нет автоматической выгрузки. Отрежьте филамент у головки и вытащите его вручную."/>
   <translation tag="This printer looks like a {} ({}% confidence), but it is set up as a {}. A wrong type applies incorrect pre-print options and presets." ru="Этот принтер похож на {} (уверенность {}%), но настроен как {}. Неверный тип применяет неправильные параметры перед печатью и пресеты."/>
   <translation tag="This printer&apos;s INDX macros are missing: {}" ru="В макросах INDX этого принтера отсутствует: {}"/>
+  <translation tag="This printer&apos;s Moonraker rejected its API key. Check the key in Settings &gt; Connection." ru="Moonraker этого принтера отклонил его API-ключ. Проверьте ключ в Настройки &gt; Соединение."/>
+  <translation tag="This printer&apos;s Moonraker requires a login. Add its API key in Settings &gt; Connection." ru="Moonraker этого принтера требует входа. Добавьте его API-ключ в Настройки &gt; Соединение."/>
   <translation tag="This printer&apos;s network service controls the WiFi radio" ru="WiFi-модулем управляет сетевая служба этого принтера"/>
   <translation tag="This printer&apos;s network service manages saved WiFi networks" ru="Сохранёнными сетями WiFi управляет сетевая служба этого принтера"/>
   <translation tag="This printer&apos;s screen has not shared a layout" ru="Экран этого принтера не поделился раскладкой"/>
@@ -4142,6 +4163,7 @@
   <translation tag="Up next: {}" ru="Далее: {}"/>
   <translation tag="Up next: {} (+{})" ru="Далее: {} (+{})"/>
   <translation tag="Up to date" ru="Актуальная версия"/>
+  <translation tag="Up: %s" ru="Время работы: %s"/>
   <translation tag="Update" ru="Обновить"/>
   <translation tag="Update Available" ru="Доступно обновление"/>
   <translation tag="Update Channel" ru="Канал обновлений"/>

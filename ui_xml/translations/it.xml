@@ -28,6 +28,7 @@
   <translation tag="%d-%d" it="%d-%d"/>
   <translation tag="%d-%d°C" it="%d-%d°C"/>
   <translation tag="%d:%02d left" it="%d:%02d rimanenti"/>
+  <translation tag="%dd %dh" it="%d g %d h"/>
   <translation tag="%dh" it="%d h"/>
   <translation tag="%dh %02dm" it="%d h %02d min"/>
   <translation tag="%dh %dm" it="%d h %d min"/>
@@ -43,6 +44,7 @@
   <translation tag="%s needs filament in %s, which is empty — this print will run out." it="%s richiede filamento e %s non ne ha — questa stampa lo esaurirà."/>
   <translation tag="%s unsaved" it="%s non salvato"/>
   <translation tag="%s uses %s, which has filament but no material set — the printer will not start until you set it." it="%s usa %s, che ha filamento ma nessun materiale impostato — la stampante non partirà finché non lo imposti."/>
+  <translation tag="%s uses %s, which has filament but no material set. A calibration this print runs needs it." it="%s usa %s, che ha filamento ma nessun materiale impostato. Una calibrazione di questa stampa ne ha bisogno."/>
   <translation tag="%s: %.0fg of %.0fg needed" it="%s: %.0fg di %.0fg necessari"/>
   <translation tag="%u layers" it="%u strati"/>
   <translation tag="%zu events queued" it="%zu eventi in coda"/>
@@ -125,6 +127,7 @@
   <translation tag="3. Save the position" it="3. Salva la posizione"/>
   <translation tag="30 minutes" it="30 minuti"/>
   <translation tag="30 seconds" it="30 secondi"/>
+  <translation tag="32 characters, 0-9 and a-f" it="32 caratteri, 0-9 e a-f"/>
   <translation tag="3D Maze" it="Labirinto 3D"/>
   <translation tag="3D Pipes" it="Tubi 3D"/>
   <translation tag="3D View" it="Vista 3D"/>
@@ -199,6 +202,8 @@
   <translation tag="AMS Active: " it="AMS attivo: "/>
   <translation tag="AMS is busy" it="AMS occupato"/>
   <translation tag="AMS/MMU system not detected" it="Sistema AMS/MMU non rilevato"/>
+  <translation tag="API Key" it="Chiave API"/>
+  <translation tag="API Key (if Moonraker requires a login)" it="Chiave API (se Moonraker richiede l&apos;accesso)"/>
   <translation tag="API not available" it="API non disponibile"/>
   <translation tag="APPEARANCE" it="ASPETTO"/>
   <translation tag="AUTO FANS" it="VENTOLE AUTO"/>
@@ -237,6 +242,7 @@
   <translation tag="Add [include helix-plr/*.cfg] to printer.cfg, so a resume reloads the mesh the print started with" it="Aggiunge [include helix-plr/*.cfg] a printer.cfg così che una ripresa ricarichi la mesh con cui è iniziata la stampa"/>
   <translation tag="Add custom filament" it="Aggiungi filamento personalizzato"/>
   <translation tag="Add page" it="Aggiungi pagina"/>
+  <translation tag="Add to Mainsail/Fluidd Webcams" it="Aggiungi alle webcam di Mainsail/Fluidd"/>
   <translation tag="Add to Queue" it="Aggiungi alla coda"/>
   <translation tag="Add to Spoolman + label" it="Aggiungi a Spoolman + etichetta"/>
   <translation tag="Added" it="Aggiunto"/>
@@ -280,6 +286,7 @@
   <translation tag="Always show Android navigation bar instead of using gestures" it="Mostra sempre la barra di navigazione Android invece dei gesti"/>
   <translation tag="Ambient Transfer" it="Trasferimento ambiente"/>
   <translation tag="AmsIdentify" it="Identifica AMS"/>
+  <translation tag="An API key is 32 characters, each 0-9 or a-f." it="Una chiave API ha 32 caratteri, ciascuno 0-9 o a-f."/>
   <translation tag="An accelerometer was detected on your printer." it="È stato rilevato un accelerometro sulla stampante."/>
   <translation tag="An app on your network is asking to connect to this printer." it="Un&apos;app sulla tua rete chiede di connettersi a questa stampante."/>
   <translation tag="An error occurred during calibration." it="Si è verificato un errore durante la calibrazione."/>
@@ -782,6 +789,7 @@
   <translation tag="Configure quick buttons and standard macros" it="Configura pulsanti rapidi e macro standard"/>
   <translation tag="Configure timelapse recording" it="Configura registrazione timelapse"/>
   <translation tag="Configure your printer&apos;s cooling fans" it="Configura le ventole di raffreddamento della stampante"/>
+  <translation tag="Configured" it="Configurata"/>
   <translation tag="Configured LED strip not found" it="Striscia LED configurata non trovata"/>
   <translation tag="Configured aux fan not found" it="Ventola ausiliaria configurata non trovata"/>
   <translation tag="Configured filament sensor not found" it="Sensore filamento configurato non trovato"/>
@@ -898,6 +906,7 @@
   <translation tag="Could not save the mesh as &apos;{}&apos;: {}" it="Impossibile salvare la mesh come &apos;{}&apos;: {}"/>
   <translation tag="Could not save the printer image tags" it="Impossibile salvare i contrassegni dell&apos;immagine"/>
   <translation tag="Could not set the WiFi country" it="Impossibile impostare il paese del WiFi"/>
+  <translation tag="Could not set the material: {}" it="Impossibile impostare il materiale: {}"/>
   <translation tag="Could not skip {}" it="Impossibile saltare {}"/>
   <translation tag="Could not start Bluetooth discovery" it="Impossibile avviare la ricerca Bluetooth"/>
   <translation tag="Could not turn the heaters off" it="Impossibile spegnere i riscaldatori"/>
@@ -1159,6 +1168,7 @@
   <translation tag="Endless Spool is turned off on this MMU" it="La bobina infinita è disattivata su questo MMU"/>
   <translation tag="Endless Spool state unknown" it="Stato della bobina infinita sconosciuto"/>
   <translation tag="Ensure Happy Hare or AFC is installed and configured" it="Assicurati che Happy Hare o AFC sia installato e configurato"/>
+  <translation tag="Enter API Key" it="Inserisci chiave API"/>
   <translation tag="Enter Current PIN" it="Inserisci il PIN attuale"/>
   <translation tag="Enter G-code command..." it="Inserisci comando G-code..."/>
   <translation tag="Enter New PIN" it="Inserisci nuovo PIN"/>
@@ -1972,6 +1982,7 @@
   <translation tag="Linear rails interval" it="Intervallo guide lineari"/>
   <translation tag="Link Spools from Tags" it="Collega bobine dai tag"/>
   <translation tag="Link a slot to the Spoolman spool its tag names" it="Collega uno slot alla bobina Spoolman indicata dal suo tag"/>
+  <translation tag="List the shared screen with this printer&apos;s webcams" it="Elenca lo schermo condiviso tra le webcam di questa stampante"/>
   <translation tag="Listen to all theme sounds" it="Ascolta tutti i suoni del tema"/>
   <translation tag="Live Z-offset, with baby steps and Save" it="Z-Offset in tempo reale, con micro-passi e Salva"/>
   <translation tag="Live view from your webcam" it="Vista live dalla webcam"/>
@@ -2023,6 +2034,7 @@
   <translation tag="Lock the screen with your PIN" it="Blocca lo schermo con il PIN"/>
   <translation tag="Locked during print" it="Bloccato durante la stampa"/>
   <translation tag="Log Level" it="Livello di log"/>
+  <translation tag="Login Required" it="Accesso richiesto"/>
   <translation tag="Logs" it="Log"/>
   <translation tag="Long Press Time" it="Durata della pressione prolungata"/>
   <translation tag="Long-press any tile to enter edit mode — rearrange, resize, remove, or add widgets, and add extra pages for your preferred layout." it="Tieni premuto un riquadro per entrare in modalità modifica — riorganizza, ridimensiona, rimuovi o aggiungi widget, e aggiungi pagine extra per il tuo layout preferito."/>
@@ -2178,10 +2190,13 @@
   <translation tag="Month" it="Mese"/>
   <translation tag="Moonraker" it="Moonraker"/>
   <translation tag="Moonraker answered at {}." it="Moonraker ha risposto su {}."/>
+  <translation tag="Moonraker at {} rejected the API key." it="Moonraker su {} ha rifiutato la chiave API."/>
+  <translation tag="Moonraker at {} requires an API key." it="Moonraker su {} richiede una chiave API."/>
   <translation tag="Moonraker has no G-code folder." it="Moonraker non ha una cartella G-code."/>
   <translation tag="Moonraker is connected to Spoolman, which tracks your spools and how much filament is left. Browse them on the Spoolman screen." it="Moonraker è connesso a Spoolman, che tiene traccia delle tue bobine e del filamento rimasto. Sfogliale nella schermata Spoolman."/>
   <translation tag="Moonraker is not responding at {}. It runs on this printer, so check that the Klipper and Moonraker services started." it="Moonraker non risponde su {}. Funziona su questa stampante, quindi verifica che i servizi Klipper e Moonraker siano avviati."/>
   <translation tag="Moonraker keeps a queue of prints to run one after another. View it in the job queue." it="Moonraker mantiene una coda di stampe da eseguire una dopo l&apos;altra. Consultala nella coda lavori."/>
+  <translation tag="Moonraker refused the login" it="Moonraker ha rifiutato l&apos;accesso"/>
   <translation tag="Moonraker restarted but Spoolman not connected. Check server." it="Moonraker riavviato ma Spoolman non connesso. Controllare il server."/>
   <translation tag="Moonraker restarting...&#10;Waiting for reconnection..." it="Moonraker in riavvio...&#10;In attesa di riconnessione..."/>
   <translation tag="Moonraker&apos;s Python is too old for this feature." it="Il Python di Moonraker è troppo vecchio per questa funzione."/>
@@ -3314,6 +3329,7 @@
   <translation tag="Session Duration" it="Durata della sessione"/>
   <translation tag="Session Start" it="Inizio della sessione"/>
   <translation tag="Set " it="Imposta "/>
+  <translation tag="Set %s to %s" it="Imposta %s su %s"/>
   <translation tag="Set Active" it="Imposta attivo"/>
   <translation tag="Set PIN" it="Imposta PIN"/>
   <translation tag="Set and watch the bed temperature" it="Imposta e monitora la temperatura piano"/>
@@ -3355,6 +3371,7 @@
   <translation tag="Show temp for" it="Mostra temperatura per"/>
   <translation tag="Show text labels on icon-only home screen widgets" it="Mostra etichette di testo sui widget con sole icone nella schermata home"/>
   <translation tag="Show this screen as a webcam in Mainsail and Fluidd" it="Mostra questo schermo come webcam in Mainsail e Fluidd"/>
+  <translation tag="Show this screen in a web browser" it="Mostra questo schermo in un browser web"/>
   <translation tag="Show up/down buttons on long lists" it="Mostra i pulsanti su/giù negli elenchi lunghi"/>
   <translation tag="Show whatever curves you last had visible on the full graph." it="Mostra le curve che erano visibili l&apos;ultima volta sul grafico completo."/>
   <translation tag="Showing the 50 newest files. See more in the printer&apos;s web UI." it="Vengono mostrati i 50 file più recenti. Vedi gli altri nell&apos;interfaccia web della stampante."/>
@@ -3382,6 +3399,8 @@
   <translation tag="Sleep {} min" it="Sospensione tra {} min"/>
   <translation tag="Sliced colors" it="Colori sezionati"/>
   <translation tag="Sliced for a Different Setup" it="Preparato per un&apos;altra configurazione"/>
+  <translation tag="Sliced for a High Flow nozzle on T{}; the printer has a standard one." it="Preparato per un ugello High Flow su T{}; la stampante ha un ugello standard."/>
+  <translation tag="Sliced for a standard nozzle on T{}; the printer has High Flow." it="Preparato per un ugello standard su T{}; la stampante ha un ugello High Flow."/>
   <translation tag="Sliced for a {:g} mm nozzle on T{}; the printer has {:g} mm." it="Preparato per un ugello da {:g} mm su T{}; la stampante ha {:g} mm."/>
   <translation tag="Sliced for {}, not {}." it="Preparato per {}, non per {}."/>
   <translation tag="Slicer" it="Slicer"/>
@@ -3858,6 +3877,8 @@
   <translation tag="This printer has no automatic unload. Cut the filament at the head and pull it out by hand." it="Questa stampante non ha lo scarico automatico. Taglia il filamento sulla testina ed estrailo a mano."/>
   <translation tag="This printer looks like a {} ({}% confidence), but it is set up as a {}. A wrong type applies incorrect pre-print options and presets." it="Questa stampante sembra una {} (affidabilità {}%), ma è configurata come {}. Un tipo errato applica opzioni pre-stampa e preset errati."/>
   <translation tag="This printer&apos;s INDX macros are missing: {}" it="Alle macro INDX di questa stampante manca: {}"/>
+  <translation tag="This printer&apos;s Moonraker rejected its API key. Check the key in Settings &gt; Connection." it="Il Moonraker di questa stampante ha rifiutato la sua chiave API. Controlla la chiave in Impostazioni &gt; Connessione."/>
+  <translation tag="This printer&apos;s Moonraker requires a login. Add its API key in Settings &gt; Connection." it="Il Moonraker di questa stampante richiede l&apos;accesso. Aggiungi la sua chiave API in Impostazioni &gt; Connessione."/>
   <translation tag="This printer&apos;s network service controls the WiFi radio" it="Il servizio di rete di questa stampante controlla la radio WiFi"/>
   <translation tag="This printer&apos;s network service manages saved WiFi networks" it="Il servizio di rete di questa stampante gestisce le reti WiFi salvate"/>
   <translation tag="This printer&apos;s screen has not shared a layout" it="Lo schermo di questa stampante non ha condiviso un layout"/>
@@ -4082,6 +4103,7 @@
   <translation tag="Up next: {}" it="Prossimo: {}"/>
   <translation tag="Up next: {} (+{})" it="Prossimo: {} (+{})"/>
   <translation tag="Up to date" it="Aggiornato"/>
+  <translation tag="Up: %s" it="Tempo di attività: %s"/>
   <translation tag="Update" it="Aggiorna"/>
   <translation tag="Update Available" it="Aggiornamento Disponibile"/>
   <translation tag="Update Channel" it="Canale Aggiornamenti"/>

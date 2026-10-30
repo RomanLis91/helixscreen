@@ -77,8 +77,10 @@ remap_modal_mappings(const std::vector<ToolMapping>& card_mappings,
 [[nodiscard]] std::map<int, int> effective_file_remap(const std::vector<ToolMapping>& mappings);
 
 /// The empty-slot pre-flight for @p used_tool_info printed through @p mappings.
+/// @p material_needed: PrintPreparationManager::enabled_options_need_material().
 [[nodiscard]] PreflightResult file_preflight(const std::vector<GcodeToolInfo>& used_tool_info,
-                                             const std::vector<ToolMapping>& mappings);
+                                             const std::vector<ToolMapping>& mappings,
+                                             bool material_needed);
 
 /// Fill the file fields of @p ctx from @p facts and the live filament state,
 /// the derivation the file view uses when its mapping card holds no user edit:
@@ -89,8 +91,9 @@ remap_modal_mappings(const std::vector<ToolMapping>& card_mappings,
 void fill_file_context(PrintStartContext& ctx, const FileStartFacts& facts);
 
 /// The connected printer's limits as this screen knows them
-/// (fit_machine_for_screen() over the config the discovery read), or unset
-/// before the printer's config was read.
+/// (fit_machine_for_screen() over the config the discovery read, then the
+/// nozzles its extruders report live: fit_machine_with_live_nozzles()), or
+/// unset before the printer's config was read.
 [[nodiscard]] std::optional<FitMachine> current_fit_machine();
 
 /// The tools @p facts shows the file using: its scanned tools, else the tools
@@ -99,7 +102,7 @@ void fill_file_context(PrintStartContext& ctx, const FileStartFacts& facts);
 [[nodiscard]] std::set<int> file_tools_used(const FileStartFacts& facts);
 
 /// The empty-slot pre-flight for @p facts, computed with the same inputs.
-[[nodiscard]] PreflightResult preflight_for(const FileStartFacts& facts);
+[[nodiscard]] PreflightResult preflight_for(const FileStartFacts& facts, bool material_needed);
 
 /// Gathers FileStartFacts for one file: metadata, then the tools/palette/grams
 /// footer read, then a whole-file tools scan when the footer cannot answer.

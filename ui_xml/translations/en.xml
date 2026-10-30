@@ -28,6 +28,7 @@
   <translation tag="%d-%d" en="%d-%d"/>
   <translation tag="%d-%d°C" en="%d-%d°C"/>
   <translation tag="%d:%02d left" en="%d:%02d left"/>
+  <translation tag="%dd %dh" en="%dd %dh"/>
   <translation tag="%dh" en="%dh"/>
   <translation tag="%dh %02dm" en="%dh %02dm"/>
   <translation tag="%dh %dm" en="%dh %dm"/>
@@ -43,6 +44,7 @@
   <translation tag="%s needs filament in %s, which is empty — this print will run out." en="%s needs filament in %s, which is empty — this print will run out."/>
   <translation tag="%s unsaved" en="%s unsaved"/>
   <translation tag="%s uses %s, which has filament but no material set — the printer will not start until you set it." en="%s uses %s, which has filament but no material set — the printer will not start until you set it."/>
+  <translation tag="%s uses %s, which has filament but no material set. A calibration this print runs needs it." en="%s uses %s, which has filament but no material set. A calibration this print runs needs it."/>
   <translation tag="%s: %.0fg of %.0fg needed" en="%s: %.0fg of %.0fg needed"/>
   <translation tag="%u layers" en="%u layers"/>
   <translation tag="%zu events queued" en="%zu events queued"/>
@@ -125,6 +127,7 @@
   <translation tag="3. Save the position" en="3. Save the position"/>
   <translation tag="30 minutes" en="30 minutes"/>
   <translation tag="30 seconds" en="30 seconds"/>
+  <translation tag="32 characters, 0-9 and a-f" en="32 characters, 0-9 and a-f"/>
   <translation tag="3D Maze" en="3D Maze"/>
   <translation tag="3D Pipes" en="3D Pipes"/>
   <translation tag="3D View" en="3D View"/>
@@ -199,6 +202,8 @@
   <translation tag="AMS Active: " en="AMS Active: "/>
   <translation tag="AMS is busy" en="AMS is busy"/>
   <translation tag="AMS/MMU system not detected" en="AMS/MMU system not detected"/>
+  <translation tag="API Key" en="API Key"/>
+  <translation tag="API Key (if Moonraker requires a login)" en="API Key (if Moonraker requires a login)"/>
   <translation tag="API not available" en="API not available"/>
   <translation tag="APPEARANCE" en="APPEARANCE"/>
   <translation tag="AUTO FANS" en="AUTO FANS"/>
@@ -237,6 +242,7 @@
   <translation tag="Add [include helix-plr/*.cfg] to printer.cfg, so a resume reloads the mesh the print started with" en="Add [include helix-plr/*.cfg] to printer.cfg, so a resume reloads the mesh the print started with"/>
   <translation tag="Add custom filament" en="Add custom filament"/>
   <translation tag="Add page" en="Add page"/>
+  <translation tag="Add to Mainsail/Fluidd Webcams" en="Add to Mainsail/Fluidd Webcams"/>
   <translation tag="Add to Queue" en="Add to Queue"/>
   <translation tag="Add to Spoolman + label" en="Add to Spoolman + label"/>
   <translation tag="Added" en="Added"/>
@@ -280,6 +286,7 @@
   <translation tag="Always show Android navigation bar instead of using gestures" en="Always show Android navigation bar instead of using gestures"/>
   <translation tag="Ambient Transfer" en="Ambient Transfer"/>
   <translation tag="AmsIdentify" en="AmsIdentify"/>
+  <translation tag="An API key is 32 characters, each 0-9 or a-f." en="An API key is 32 characters, each 0-9 or a-f."/>
   <translation tag="An accelerometer was detected on your printer." en="An accelerometer was detected on your printer."/>
   <translation tag="An app on your network is asking to connect to this printer." en="An app on your network is asking to connect to this printer."/>
   <translation tag="An error occurred during calibration." en="An error occurred during calibration."/>
@@ -782,6 +789,7 @@
   <translation tag="Configure quick buttons and standard macros" en="Configure quick buttons and standard macros"/>
   <translation tag="Configure timelapse recording" en="Configure timelapse recording"/>
   <translation tag="Configure your printer&apos;s cooling fans" en="Configure your printer&apos;s cooling fans"/>
+  <translation tag="Configured" en="Configured"/>
   <translation tag="Configured LED strip not found" en="Configured LED strip not found"/>
   <translation tag="Configured aux fan not found" en="Configured aux fan not found"/>
   <translation tag="Configured filament sensor not found" en="Configured filament sensor not found"/>
@@ -898,6 +906,7 @@
   <translation tag="Could not save the mesh as &apos;{}&apos;: {}" en="Could not save the mesh as &apos;{}&apos;: {}"/>
   <translation tag="Could not save the printer image tags" en="Could not save the printer image tags"/>
   <translation tag="Could not set the WiFi country" en="Could not set the WiFi country"/>
+  <translation tag="Could not set the material: {}" en="Could not set the material: {}"/>
   <translation tag="Could not skip {}" en="Could not skip {}"/>
   <translation tag="Could not start Bluetooth discovery" en="Could not start Bluetooth discovery"/>
   <translation tag="Could not turn the heaters off" en="Could not turn the heaters off"/>
@@ -1159,6 +1168,7 @@
   <translation tag="Endless Spool is turned off on this MMU" en="Endless Spool is turned off on this MMU"/>
   <translation tag="Endless Spool state unknown" en="Endless Spool state unknown"/>
   <translation tag="Ensure Happy Hare or AFC is installed and configured" en="Ensure Happy Hare or AFC is installed and configured"/>
+  <translation tag="Enter API Key" en="Enter API Key"/>
   <translation tag="Enter Current PIN" en="Enter Current PIN"/>
   <translation tag="Enter G-code command..." en="Enter G-code command..."/>
   <translation tag="Enter New PIN" en="Enter New PIN"/>
@@ -1972,6 +1982,7 @@
   <translation tag="Linear rails interval" en="Linear rails interval"/>
   <translation tag="Link Spools from Tags" en="Link Spools from Tags"/>
   <translation tag="Link a slot to the Spoolman spool its tag names" en="Link a slot to the Spoolman spool its tag names"/>
+  <translation tag="List the shared screen with this printer&apos;s webcams" en="List the shared screen with this printer&apos;s webcams"/>
   <translation tag="Listen to all theme sounds" en="Listen to all theme sounds"/>
   <translation tag="Live Z-offset, with baby steps and Save" en="Live Z-offset, with baby steps and Save"/>
   <translation tag="Live view from your webcam" en="Live view from your webcam"/>
@@ -2023,6 +2034,7 @@
   <translation tag="Lock the screen with your PIN" en="Lock the screen with your PIN"/>
   <translation tag="Locked during print" en="Locked during print"/>
   <translation tag="Log Level" en="Log Level"/>
+  <translation tag="Login Required" en="Login Required"/>
   <translation tag="Logs" en="Logs"/>
   <translation tag="Long Press Time" en="Long Press Time"/>
   <translation tag="Long-press any tile to enter edit mode — rearrange, resize, remove, or add widgets, and add extra pages for your preferred layout." en="Long-press any tile to enter edit mode — rearrange, resize, remove, or add widgets, and add extra pages for your preferred layout."/>
@@ -2178,10 +2190,13 @@
   <translation tag="Month" en="Month"/>
   <translation tag="Moonraker" en="Moonraker"/>
   <translation tag="Moonraker answered at {}." en="Moonraker answered at {}."/>
+  <translation tag="Moonraker at {} rejected the API key." en="Moonraker at {} rejected the API key."/>
+  <translation tag="Moonraker at {} requires an API key." en="Moonraker at {} requires an API key."/>
   <translation tag="Moonraker has no G-code folder." en="Moonraker has no G-code folder."/>
   <translation tag="Moonraker is connected to Spoolman, which tracks your spools and how much filament is left. Browse them on the Spoolman screen." en="Moonraker is connected to Spoolman, which tracks your spools and how much filament is left. Browse them on the Spoolman screen."/>
   <translation tag="Moonraker is not responding at {}. It runs on this printer, so check that the Klipper and Moonraker services started." en="Moonraker is not responding at {}. It runs on this printer, so check that the Klipper and Moonraker services started."/>
   <translation tag="Moonraker keeps a queue of prints to run one after another. View it in the job queue." en="Moonraker keeps a queue of prints to run one after another. View it in the job queue."/>
+  <translation tag="Moonraker refused the login" en="Moonraker refused the login"/>
   <translation tag="Moonraker restarted but Spoolman not connected. Check server." en="Moonraker restarted but Spoolman not connected. Check server."/>
   <translation tag="Moonraker restarting...&#10;Waiting for reconnection..." en="Moonraker restarting...&#10;Waiting for reconnection..."/>
   <translation tag="Moonraker&apos;s Python is too old for this feature." en="Moonraker&apos;s Python is too old for this feature."/>
@@ -3314,6 +3329,7 @@
   <translation tag="Session Duration" en="Session Duration"/>
   <translation tag="Session Start" en="Session Start"/>
   <translation tag="Set " en="Set "/>
+  <translation tag="Set %s to %s" en="Set %s to %s"/>
   <translation tag="Set Active" en="Set Active"/>
   <translation tag="Set PIN" en="Set PIN"/>
   <translation tag="Set and watch the bed temperature" en="Set and watch the bed temperature"/>
@@ -3355,6 +3371,7 @@
   <translation tag="Show temp for" en="Show temp for"/>
   <translation tag="Show text labels on icon-only home screen widgets" en="Show text labels on icon-only home screen widgets"/>
   <translation tag="Show this screen as a webcam in Mainsail and Fluidd" en="Show this screen as a webcam in Mainsail and Fluidd"/>
+  <translation tag="Show this screen in a web browser" en="Show this screen in a web browser"/>
   <translation tag="Show up/down buttons on long lists" en="Show up/down buttons on long lists"/>
   <translation tag="Show whatever curves you last had visible on the full graph." en="Show whatever curves you last had visible on the full graph."/>
   <translation tag="Showing the 50 newest files. See more in the printer&apos;s web UI." en="Showing the 50 newest files. See more in the printer&apos;s web UI."/>
@@ -3382,6 +3399,8 @@
   <translation tag="Sleep {} min" en="Sleep {} min"/>
   <translation tag="Sliced colors" en="Sliced colors"/>
   <translation tag="Sliced for a Different Setup" en="Sliced for a Different Setup"/>
+  <translation tag="Sliced for a High Flow nozzle on T{}; the printer has a standard one." en="Sliced for a High Flow nozzle on T{}; the printer has a standard one."/>
+  <translation tag="Sliced for a standard nozzle on T{}; the printer has High Flow." en="Sliced for a standard nozzle on T{}; the printer has High Flow."/>
   <translation tag="Sliced for a {:g} mm nozzle on T{}; the printer has {:g} mm." en="Sliced for a {:g} mm nozzle on T{}; the printer has {:g} mm."/>
   <translation tag="Sliced for {}, not {}." en="Sliced for {}, not {}."/>
   <translation tag="Slicer" en="Slicer"/>
@@ -3858,6 +3877,8 @@
   <translation tag="This printer has no automatic unload. Cut the filament at the head and pull it out by hand." en="This printer has no automatic unload. Cut the filament at the head and pull it out by hand."/>
   <translation tag="This printer looks like a {} ({}% confidence), but it is set up as a {}. A wrong type applies incorrect pre-print options and presets." en="This printer looks like a {} ({}% confidence), but it is set up as a {}. A wrong type applies incorrect pre-print options and presets."/>
   <translation tag="This printer&apos;s INDX macros are missing: {}" en="This printer&apos;s INDX macros are missing: {}"/>
+  <translation tag="This printer&apos;s Moonraker rejected its API key. Check the key in Settings &gt; Connection." en="This printer&apos;s Moonraker rejected its API key. Check the key in Settings &gt; Connection."/>
+  <translation tag="This printer&apos;s Moonraker requires a login. Add its API key in Settings &gt; Connection." en="This printer&apos;s Moonraker requires a login. Add its API key in Settings &gt; Connection."/>
   <translation tag="This printer&apos;s network service controls the WiFi radio" en="This printer&apos;s network service controls the WiFi radio"/>
   <translation tag="This printer&apos;s network service manages saved WiFi networks" en="This printer&apos;s network service manages saved WiFi networks"/>
   <translation tag="This printer&apos;s screen has not shared a layout" en="This printer&apos;s screen has not shared a layout"/>
@@ -4082,6 +4103,7 @@
   <translation tag="Up next: {}" en="Up next: {}"/>
   <translation tag="Up next: {} (+{})" en="Up next: {} (+{})"/>
   <translation tag="Up to date" en="Up to date"/>
+  <translation tag="Up: %s" en="Up: %s"/>
   <translation tag="Update" en="Update"/>
   <translation tag="Update Available" en="Update Available"/>
   <translation tag="Update Channel" en="Update Channel"/>

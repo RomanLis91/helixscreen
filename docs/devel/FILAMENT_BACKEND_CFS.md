@@ -357,14 +357,33 @@ persisted flag re-clears idempotently on the next boot).
 ### No CFS on the bus
 
 Stock K2 firmware registers `box` whether or not a CFS is attached. With none, every
-address `T1`..`T4` reads `state: "None"`, so the parse finds no unit (#1904). The backend
+address `T1`..`T4` reads `state: "None"` and the box's own `state` reads `"disconnect"`, so
+the parse finds no unit (#1904). The backend
 still runs, because it owns the external-spool load and unload, and it reports the
 machine through `AmsSystemInfo::external_spool_only`:
 
-- `apply_box_units_locked()` sets it when a stock frame finds no unit and none has been
-  seen this session. A unit seen once keeps its place in the list when a later frame
-  drops it, so the flag cannot return on a unit that went briefly quiet. A unit coming
-  online clears it, and clears a `-2` the declaration does not hold.
+- `converge_external_spool_only_locked()` sets it when no unit has been seen this
+  session and the box's `state` (from the merged frames) is `"disconnect"`, provided the
+  bus has settled. A K2 with a CFS publishes that same frame for about 30 s at every boot,
+  until discovery reaches its unit (§ Boot sequence and the address table in
+  `printer-research/CREALITY_CFS_K2_INTERNALS.md`, #1933). So at start and on every
+  Klipper restart the backend reads printer.cfg's address table
+  (`configfile.settings.auto_addr.mb_addr_table_uniids`, `cfs::has_registered_unit`):
+  - no registered unit, or no table: settled, so `"disconnect"` decides at once (#1904);
+  - a registered unit: unsettled until it reports or `kRegisteredUnitSettle` (90 s, more
+    than twice the measured 38 s) has passed since the start, so a CFS unplugged since
+    printer.cfg last saved it still ends single-spool;
+  - query not answered yet at a start: unsettled, with the same 90 s bound. A Klipper
+    restart keeps the last answer until the new one lands, and opens a new 90 s window.
+
+  The box's `"None"` state, which every Klipper start publishes before discovery, leaves
+  the last `"disconnect"` or `"connect"` reading standing, so a K2 with no CFS stays
+  single-spool through a `FIRMWARE_RESTART` or `SAVE_CONFIG`.
+
+  A bare `state` delta counts as a full frame so the verdict follows it. A unit seen once
+  keeps its place in the list when a later frame drops it, so the flag cannot return on a
+  unit that went briefly quiet. A unit coming online clears it, and clears a `-2` the
+  declaration does not hold.
 - `supports_bypass` stays false (the toggle would have no other side), and
   `is_bypass_active()` is true. Load therefore falls through to `LOAD_MATERIAL` and
   unload stays on the backend's bypass script, `QUIT_MATERIAL` plus the long retract
@@ -378,6 +397,13 @@ machine through `AmsSystemInfo::external_spool_only`:
 filament panel then shows its external-spool row and the home grid drops the slot and
 bypass widgets, while `ams_action` and `ams_filament_loaded` stay live so the panel's
 Load and Unload track their progress.
+
+The toolhead switch, `filament_switch_sensor filament_sensor`, is claimed at discovery as the
+CFS's own (`AmsBackendCfs::owns_filament_sensor`). Once the backend reports the empty bus,
+`AmsState::filament_hardware_absent()` releases that claim: the sensor appears in
+Settings > Sensors and the filament sensor wizard, and can be given the runout role. Until
+the first frame answers, the claim holds, and hardware validation keeps it throughout, so
+no "sensor available" toast offers it.
 
 `box.enable == 0` is not this state. It is what the stock bypass declaration sends, and
 a box stood down that way still has its unit. `HELIX_MOCK_CFS_BOXES=none` reproduces the

@@ -28,6 +28,7 @@ translations:
   '%d tools': '%d outils'
   '%d units': '%d unités'
   '%d:%02d left': '%d:%02d restantes'
+  '%dd %dh': '%d j %d h'
   '%dh': '%d h'
   '%dh %02dm': '%d h %02d min'
   '%dh %dm': '%d h %d min'
@@ -43,6 +44,7 @@ translations:
   '%s needs filament in %s, which is empty — this print will run out.': '%s nécessite du filament dans %s, qui est vide — cette impression manquera de filament.'
   '%s unsaved': '%s non enregistré'
   '%s uses %s, which has filament but no material set — the printer will not start until you set it.': '%s utilise %s, qui contient du filament mais aucun matériau défini — l''imprimante ne démarrera pas tant qu''il n''est pas défini.'
+  '%s uses %s, which has filament but no material set. A calibration this print runs needs it.': '%s utilise %s, qui contient du filament mais aucun matériau défini. Une calibration de cette impression en a besoin.'
   '%s: %.0fg of %.0fg needed': '%s : %.0fg sur %.0fg requis'
   '%u layers': '%u couches'
   '%zu events queued': '%zu événements en file'
@@ -134,6 +136,7 @@ translations:
 
   30 minutes: 30 minutes
   30 seconds: 30 secondes
+  32 characters, 0-9 and a-f: '32 caractères, 0-9 et a-f'
   3D Maze: Labyrinthe 3D
   3D Pipes: 3D Pipes
   3D View: Vue 3D
@@ -210,6 +213,8 @@ translations:
   'AMS Active: ': 'AMS actif : '
   AMS is busy: L'AMS est occupé
   AMS/MMU system not detected: 'Système AMS/MMU non détecté'
+  API Key: 'Clé API'
+  API Key (if Moonraker requires a login): 'Clé API (si Moonraker exige une connexion)'
   API not available: API non disponible
   APPEARANCE: APPARENCE
   AUTO FANS: VENTILATEURS AUTO
@@ -250,6 +255,7 @@ translations:
   Add [include helix-plr/*.cfg] to printer.cfg, so a resume reloads the mesh the print started with: 'Ajoute [include helix-plr/*.cfg] à printer.cfg pour qu''une reprise recharge le maillage avec lequel l''impression a commencé'
   Add custom filament: Ajouter un filament personnalisé
   Add page: 'Ajouter une page'
+  Add to Mainsail/Fluidd Webcams: 'Ajouter aux webcams Mainsail/Fluidd'
   Add to Queue: Ajouter à la file
   Added: Ajouté
   Added to Spoolman: Ajouté à Spoolman
@@ -298,6 +304,7 @@ translations:
     la barre de navigation Android au lieu des gestes
   Ambient Transfer: Transfert ambiant
   AmsIdentify: Identifier l'AMS
+  An API key is 32 characters, each 0-9 or a-f.: 'Une clé API compte 32 caractères, chacun 0-9 ou a-f.'
   An accelerometer was detected on your printer.: Un accéléromètre a été détecté sur
     votre imprimante.
   An app on your network is asking to connect to this printer.: 'Une application de votre réseau demande à se connecter à cette imprimante.'
@@ -864,6 +871,7 @@ translations:
   Configure timelapse recording: Configurer l'enregistrement timelapse
   Configure your printer's cooling fans: Configurer les ventilateurs de refroidissement
     de votre imprimante
+  Configured: 'Configurée'
   Configured LED strip not found: 'Bandeau LED configuré introuvable'
   Configured aux fan not found: 'Ventilateur auxiliaire configuré introuvable'
   Configured filament sensor not found: 'Capteur de filament configuré introuvable'
@@ -1010,6 +1018,7 @@ translations:
   "Could not save the mesh as '{}': {}": "Impossible d'enregistrer le maillage sous '{}' : {}"
   Could not save the printer image tags: 'Échec de l''enregistrement des repères de l''image'
   Could not set the WiFi country: Impossible de définir le pays du WiFi
+  'Could not set the material: {}': 'Impossible de définir le matériau : {}'
   Could not skip {}: 'Impossible d''ignorer {}'
   Could not start Bluetooth discovery: Impossible de démarrer la découverte Bluetooth
   Could not update filaments: Impossible de mettre à jour les filaments
@@ -1287,6 +1296,7 @@ translations:
   Endless Spool is turned off on this MMU: 'La bobine infinie est désactivée sur ce MMU'
   Endless Spool state unknown: État de la bobine infinie inconnu
   Ensure Happy Hare or AFC is installed and configured: Vérifiez que Happy Hare ou AFC est installé et configuré
+  Enter API Key: 'Saisir la clé API'
   Enter Current PIN: Saisissez le code PIN actuel
   Enter G-code command...: Entrez une commande G-code...
   Enter New PIN: Entrez le nouveau PIN
@@ -2187,6 +2197,7 @@ translations:
   Linear rails interval: 'Intervalle des rails linéaires'
   Link Spools from Tags: 'Lier les bobines par étiquette'
   Link a slot to the Spoolman spool its tag names: 'Lier un slot à la bobine Spoolman indiquée par son étiquette'
+  List the shared screen with this printer's webcams: 'Lister l''écran partagé parmi les webcams de cette imprimante'
   Listen to all theme sounds: Écouter tous les sons du thème
   Live Z-offset, with baby steps and Save: Z-Offset en direct, avec micro-pas et Enregistrer
   Live view from your webcam: Vue en direct de votre webcam
@@ -2238,6 +2249,7 @@ translations:
   Lock the screen with your PIN: Verrouiller l'écran avec votre PIN
   Locked during print: Verrouillé pendant l'impression
   Log Level: Niveau de log
+  Login Required: 'Connexion requise'
   Logs: Journaux
   Long Press Time: 'Durée d''appui long'
   'Long-press any tile to enter edit mode — rearrange, resize, remove, or add widgets, and add extra pages for your preferred layout.': 'Appui long sur n''importe quelle tuile pour entrer en mode édition — réorganisez, redimensionnez, supprimez ou ajoutez des widgets, et ajoutez des pages supplémentaires pour votre disposition préférée.'
@@ -2399,11 +2411,14 @@ translations:
   Monitoring: Surveillance
   Month: Mois
   Moonraker: Moonraker
+  Moonraker at {} rejected the API key.: 'Moonraker à {} a refusé la clé API.'
+  Moonraker at {} requires an API key.: 'Moonraker à {} exige une clé API.'
   Moonraker has no G-code folder.: "Moonraker n'a pas de dossier G-code."
   ? Moonraker is connected to Spoolman, which tracks your spools and how much filament is left. Browse them on the Spoolman screen.
   : 'Moonraker est connecté à Spoolman, qui suit vos bobines et le filament restant. Parcourez-les sur l''écran Spoolman.'
   Moonraker is not responding at {}. It runs on this printer, so check that the Klipper and Moonraker services started.: 'Moonraker ne répond pas à {}. Il tourne sur cette imprimante : vérifiez que les services Klipper et Moonraker ont démarré.'
   Moonraker keeps a queue of prints to run one after another. View it in the job queue.: 'Moonraker tient une file d''impressions à lancer l''une après l''autre. Consultez-la dans la file d''impression.'
+  Moonraker refused the login: 'Moonraker a refusé la connexion'
   Moonraker restarted but Spoolman not connected. Check server.: Moonraker a redémarré
     mais Spoolman n'est pas connecté. Vérifiez le serveur.
   ? "Moonraker restarting...\nWaiting for reconnection..."
@@ -3637,6 +3652,7 @@ translations:
   Session Duration: Durée de la session
   Session Start: Début de la session
   'Set ': 'Définir '
+  Set %s to %s: 'Définir %s sur %s'
   Set Active: Définir actif
   Set PIN: Définir le PIN
   Set and watch the bed temperature: Régler et suivre la température du plateau
@@ -3687,6 +3703,7 @@ translations:
   Show text labels on icon-only home screen widgets: Afficher les libellés sur les
     widgets de l'écran d'accueil
   Show this screen as a webcam in Mainsail and Fluidd: 'Afficher cet écran comme webcam dans Mainsail et Fluidd'
+  Show this screen in a web browser: 'Afficher cet écran dans un navigateur web'
   Show up/down buttons on long lists: Afficher les boutons haut/bas sur les longues
     listes
   Show whatever curves you last had visible on the full graph.: Afficher les dernières
@@ -3718,6 +3735,8 @@ translations:
   Sleep {} min: Veille dans {} min
   Sliced colors: Couleurs tranchées
   Sliced for a Different Setup: 'Tranché pour une autre configuration'
+  Sliced for a High Flow nozzle on T{}; the printer has a standard one.: 'Tranché pour une buse High Flow sur T{} ; l''imprimante a une buse standard.'
+  Sliced for a standard nozzle on T{}; the printer has High Flow.: 'Tranché pour une buse standard sur T{} ; l''imprimante a une buse High Flow.'
   Sliced for a {:g} mm nozzle on T{}; the printer has {:g} mm.: 'Tranché pour une buse de {:g} mm sur T{} ; l''imprimante a {:g} mm.'
   Sliced for {}, not {}.: 'Tranché pour {}, pas pour {}.'
   Slicer: Trancheur
@@ -4279,6 +4298,8 @@ translations:
   ? This printer looks like a {} ({}% confidence), but it is set up as a {}. A wrong type applies incorrect pre-print options and presets.
   : Cette imprimante ressemble à un {} ({} % de confiance), mais elle est configurée en {}. Un type erroné applique des options et des préréglages de pré-impression incorrects.
   "This printer's INDX macros are missing: {}": "Il manque aux macros INDX de cette imprimante : {}"
+  This printer's Moonraker rejected its API key. Check the key in Settings > Connection.: 'Le Moonraker de cette imprimante a refusé sa clé API. Vérifiez la clé dans Paramètres > Connexion.'
+  This printer's Moonraker requires a login. Add its API key in Settings > Connection.: 'Le Moonraker de cette imprimante exige une connexion. Ajoutez sa clé API dans Paramètres > Connexion.'
   This printer's network service controls the WiFi radio: Le service réseau de cette imprimante contrôle la radio WiFi
   This printer's network service manages saved WiFi networks: Le service réseau de cette imprimante gère les réseaux WiFi enregistrés
   This printer's screen has not shared a layout: "L'écran de cette imprimante n'a pas partagé de disposition"
@@ -4535,6 +4556,7 @@ translations:
   'Up next: {}': 'À suivre : {}'
   'Up next: {} (+{})': 'À suivre : {} (+{})'
   Up to date: À jour
+  'Up: %s': 'Temps de fonctionnement : %s'
   Update: Mettre à jour
   Update Available: Mise à jour disponible
   Update Channel: Canal de mise à jour

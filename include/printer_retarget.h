@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "moonraker_auth.h"
+
 #include <string>
 
 class MoonrakerManager; // NAMESPACE_OK: forward declaration of the global MoonrakerManager
@@ -15,6 +17,14 @@ std::string active_printer_ws_url(const std::string& default_host = "");
 
 /// The HTTP base URL of the active printer's Moonraker, for file transfers and REST.
 std::string active_printer_http_url(const std::string& default_host = "");
+
+/// The active printer's Moonraker address and API key, from its saved settings: the
+/// same host and port active_printer_ws_url() connects to, so the key matches it.
+moonraker_auth::Credential active_printer_credential(const std::string& default_host = "");
+
+/// Sets the active printer's API key in its settings entry, false when @p api_key is blank.
+/// The caller saves the config. The key never leaves that entry.
+void set_active_printer_api_key(const std::string& api_key);
 
 /// Connects @p manager to a Moonraker with what every connection has: the print-start
 /// collector, created first. False when the transport could not start (e.g. no internal

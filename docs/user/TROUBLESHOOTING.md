@@ -308,6 +308,37 @@ sudo ufw status
 sudo ufw allow 7125/tcp
 ```
 
+### "Unauthorized" everywhere: Moonraker requires a login
+
+**Symptoms:**
+- A **Login Required** message saying the printer's Moonraker requires a login, or that it rejected the API key
+- HelixScreen connects but shows no files, no history and no printer status
+- In the setup wizard, Test Connection reports that Moonraker requires an API key
+- `moonraker.log` lists requests from HelixScreen refused with `401 ... Unauthorized, Force Logins Enabled`
+
+**Cause:** Moonraker has `force_logins: True` in its `[authorization]` section and at least one user account exists. Moonraker then refuses every request that carries no credential, including requests from the printer itself, even though `trusted_clients` lists it.
+
+**Solutions:**
+
+Give HelixScreen the printer's Moonraker API key. Moonraker accepts it whether or not logins are forced.
+
+1. Get the key. With logins forced, you must log in first. Run this on the printer, using your Moonraker user name and password:
+   ```bash
+   TOKEN=$(curl -s -X POST http://localhost:7125/access/login \
+     -H 'Content-Type: application/json' \
+     -d '{"username": "YOUR_USER", "password": "YOUR_PASSWORD"}' \
+     | python3 -c 'import json, sys; print(json.load(sys.stdin)["result"]["token"])')
+   curl -s -H "Authorization: Bearer $TOKEN" http://localhost:7125/access/api_key
+   ```
+   The key is the 32-character value in `result`. A password or a shortened key does not work: Moonraker refuses a wrong key outright, even from a trusted address.
+2. Enter it on the screen: **Settings > Connection > API Key** (or the **Enter API Key** button on the Login Required message) opens the printer's host, port and key together. Type or paste the key, press **Test Connection**, then **Save**; HelixScreen reconnects with it at once. In the setup wizard, the key field appears beside the address as soon as Test Connection finds a printer that requires one.
+
+   Without the screen, put it in HelixScreen's `settings.json` instead, in your printer's entry, as `"moonraker_api_key": "THE_KEY"` (see [`moonraker_api_key`](CONFIGURATION.md#moonraker_api_key)), and restart HelixScreen.
+
+HelixScreen sends the key only to that printer's Moonraker address and port, never to a webcam, Spoolman or any other server. It is kept with that printer's entry, masked on screen until you reveal it, and left out of logs and debug bundles.
+
+If you do not need logins, the alternative is to remove `force_logins` from Moonraker's configuration and restart Moonraker.
+
 ---
 
 ### "Connection lost" during print
@@ -1555,6 +1586,8 @@ Re-slice your file after adding these — the commands are baked into the G-code
 > **Cura users:** Cura doesn't expose these layer placeholders directly and needs a post-processing script to inject `SET_PRINT_STATS_INFO`. See the Klipper community docs and forums for a Cura post-processing plugin that adds it.
 
 > **Note:** Some noise in the layer count during the print-start phase (bed mesh, purge/prime line, Z-hop) is normal. HelixScreen holds the layer at 0 until real printing begins, so it will not jump ahead before the first layer. The estimate only matters mid-print when the slicer macros above are missing.
+
+> **Z-hops do not move the estimate.** When the layer is worked out from the nozzle height, a new layer shows only once the nozzle has stayed at that height for about a second and a half of printing, so the quick lift of a Z-hop on every travel move does not bump the count up and back. The counter steps to each new layer that much after the layer change.
 
 ### Time remaining is inaccurate or slow to settle
 

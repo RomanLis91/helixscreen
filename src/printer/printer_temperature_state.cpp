@@ -561,6 +561,16 @@ void PrinterTemperatureState::update_from_status(const nlohmann::json& status) {
             info.pressure_advance = data["pressure_advance"].get<float>();
         }
 
+        if (data.contains("nozzle_diameter") && data["nozzle_diameter"].is_number()) {
+            const double d = data["nozzle_diameter"].get<double>();
+            if (std::isfinite(d) && d > 0.0) {
+                info.nozzle_diameter = d;
+            }
+        }
+        if (data.contains("nozzle_volume_type") && data["nozzle_volume_type"].is_string()) {
+            info.nozzle_volume_type = data["nozzle_volume_type"].get<std::string>();
+        }
+
         publish_power(name, info.power_subject.get());
     }
 
@@ -905,6 +915,9 @@ void PrinterTemperatureState::publish_chamber_dryer() {
         return;
     }
     const int current_c = static_cast<int>(std::lround(lv_subject_get_int(&chamber_temp_) / 10.0));
+    // The compact "41/55°C" is deliberate: the chamber card's dryer row is one
+    // line beside a Stop button, and its longest readout ("59/60°C  12:00 left")
+    // ellipsizes at 480x320 with the spaced pair format_temperature_pair() draws.
     std::string text = chamber_dryer_target_c_ > 0
                            ? fmt::format("{}/{}°C", current_c, chamber_dryer_target_c_)
                            : fmt::format("{}°C", current_c);

@@ -29,6 +29,7 @@
 #include "macro_param_cache.h"
 #include "macro_patterns.h"
 #include "moonraker_api.h"
+#include "moonraker_auth.h"
 #include "moonraker_client.h"
 #include "moonraker_subscription_merge.h"
 #include "pause_descriptor.h"
@@ -161,7 +162,13 @@ void MoonrakerDiscoverySequence::start(
                 spdlog::info("[Moonraker Client] Identified to Moonraker (connection_id: {})",
                              conn_id);
                 identified_.store(true);
+                helix::moonraker_auth::mark_authorized();
             } else if (identify_response.contains("error")) {
+                const MoonrakerError err = MoonrakerError::from_json_rpc(
+                    identify_response["error"], "server.connection.identify");
+                if (stop_for_refused_login(err)) {
+                    return;
+                }
                 // Log but continue - older Moonraker versions may not support this
                 spdlog::warn("[Moonraker Client] Failed to identify: {}",
                              identify_response["error"].dump());
@@ -174,10 +181,29 @@ void MoonrakerDiscoverySequence::start(
             if (is_stale() || !is_current_sequence(seq))
                 return;
 
+            if (stop_for_refused_login(err)) {
+                return;
+            }
             // Log but continue - identify is not strictly required
             spdlog::warn("[Moonraker Client] Identify request failed: {}", err.message);
             continue_discovery(seq);
         });
+}
+
+bool MoonrakerDiscoverySequence::stop_for_refused_login(const MoonrakerError& err) {
+    if (!helix::moonraker_auth::is_unauthorized_error(err.code, err.message)) {
+        return false;
+    }
+    spdlog::warn("[Moonraker Client] Moonraker refused the login: {}", err.message);
+    if (helix::moonraker_auth::mark_unauthorized()) {
+        client_.emit_event(helix::moonraker_event::login_refused());
+    }
+    if (on_error_discovery_) {
+        auto cb = std::move(on_error_discovery_);
+        on_complete_discovery_ = nullptr;
+        cb(err.message);
+    }
+    return true;
 }
 
 void MoonrakerDiscoverySequence::discover_power_devices() {
@@ -1287,8 +1313,11 @@ json MoonrakerDiscoverySequence::build_subscription_objects(const PrinterDiscove
     // each kind is narrowed to what the parsers consume. Humidity rides on every
     // temperature kind because Moonraker omits it for sensors that do not report
     // it. An extruder also carries pressure advance, which the tuning screens
-    // read back as the truth of what is in effect. Probes are subscribed below
-    // through the sensor managers, whose fields vary per probe type.
+    // read back as the truth of what is in effect, and the fitted nozzle's
+    // diameter and flow type, which the fit check prefers to the config's where
+    // the firmware reports them (a field an object lacks comes back null or not
+    // at all). Probes are subscribed below through the sensor managers, whose
+    // fields vary per probe type.
     for (const auto& [name, kind] : hw.object_kinds()) {
         const auto fields = helix::hw::status_fields(kind);
         if (fields.empty()) {
@@ -1298,7 +1327,8 @@ json MoonrakerDiscoverySequence::build_subscription_objects(const PrinterDiscove
             subscription_objects[name] = nullptr;
         } else if (kind == helix::hw::ObjectKind::Heater && is_extruder_name(name)) {
             static const json extruder_fields =
-                json::array({"temperature", "target", "power", "pressure_advance"});
+                json::array({"temperature", "target", "power", "pressure_advance",
+                             "nozzle_diameter", "nozzle_volume_type"});
             subscription_objects[name] = extruder_fields;
         } else {
             json list = json::array();

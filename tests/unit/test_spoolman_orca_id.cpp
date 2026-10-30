@@ -79,17 +79,17 @@ TEST_CASE("An explicit linked Spoolman id wins the catalog with fallback", "[spo
     }
     SECTION("missing extra") {
         const auto ovr = assign(spool_record(json::object()), slot);
-        CHECK(to_lane_data_record(0, ovr)["filament_id"] == "OGFB00");
+        CHECK(to_lane_data_record(0, ovr)["filament_id"] == "OFhuaUQB");
     }
     SECTION("invalid extra") {
         const auto ovr = assign(spool_record({{"orca_filament_id", 55}}), slot);
-        CHECK(to_lane_data_record(0, ovr)["filament_id"] == "OGFB00");
+        CHECK(to_lane_data_record(0, ovr)["filament_id"] == "OFhuaUQB");
     }
     SECTION("unlinked stale id") {
         FilamentSlotOverride ovr;
         ovr.catalog_id = slot.catalog_id;
         ovr.spoolman_orca_filament_id = "P123abcd";
-        CHECK(to_lane_data_record(0, ovr)["filament_id"] == "OGFB00");
+        CHECK(to_lane_data_record(0, ovr)["filament_id"] == "OFhuaUQB");
         CHECK_FALSE(to_lane_data_record(0, ovr).contains("helix_spoolman_orca_filament_id"));
     }
 }

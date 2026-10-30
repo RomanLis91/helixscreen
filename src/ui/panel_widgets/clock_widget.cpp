@@ -34,35 +34,19 @@ static lv_subject_t s_date_subject;
 static char s_date_buffer[32];
 
 static lv_subject_t s_uptime_subject;
-static char s_uptime_buffer[32];
+static char s_uptime_buffer[64];
 
 static lv_subject_t s_size_mode_subject;
 
 static helix::WidgetSubjects s_subjects{"ClockWidgetSubjects"};
 
-/// Read system uptime from /proc/uptime and format as human-readable string
+/// Read system uptime from /proc/uptime and format it for the widget
 static void format_uptime(char* buf, size_t buf_size) {
     const std::optional<std::string> line = helix::text_io::read_first_line("/proc/uptime");
     const std::optional<double> parsed =
         line ? helix::text_io::parse_leading<double>(*line) : std::nullopt;
-    if (!parsed) {
-        std::snprintf(buf, buf_size, "Up: --");
-        return;
-    }
-    const double uptime_secs = *parsed;
-
-    auto total_minutes = static_cast<int>(uptime_secs / 60.0);
-    int days = total_minutes / (60 * 24);
-    int hours = (total_minutes / 60) % 24;
-    int minutes = total_minutes % 60;
-
-    if (days > 0) {
-        std::snprintf(buf, buf_size, "Up: %dd %dh", days, hours);
-    } else if (hours > 0) {
-        std::snprintf(buf, buf_size, "Up: %dh %dm", hours, minutes);
-    } else {
-        std::snprintf(buf, buf_size, "Up: %dm", minutes);
-    }
+    const int uptime_secs = parsed ? static_cast<int>(*parsed) : -1;
+    std::snprintf(buf, buf_size, "%s", helix::ui::format_uptime(uptime_secs).c_str());
 }
 
 static void clock_widget_init_subjects() {
@@ -71,27 +55,24 @@ static void clock_widget_init_subjects() {
         lv_subject_init_string(&s_time_subject, s_time_buffer, nullptr, sizeof(s_time_buffer),
                                "--:--");
         s_subjects.publish("clock_time_text", &s_time_subject);
-        SubjectDebugRegistry::instance().register_subject(
-            &s_time_subject, "clock_time_text", LV_SUBJECT_TYPE_STRING, __FILE__, __LINE__);
+        HELIX_SUBJECT_DEBUG_REGISTER(&s_time_subject, "clock_time_text", LV_SUBJECT_TYPE_STRING);
 
         // Date text (e.g. "Fri, Feb 28")
         lv_subject_init_string(&s_date_subject, s_date_buffer, nullptr, sizeof(s_date_buffer), "");
         s_subjects.publish("clock_date_text", &s_date_subject);
-        SubjectDebugRegistry::instance().register_subject(
-            &s_date_subject, "clock_date_text", LV_SUBJECT_TYPE_STRING, __FILE__, __LINE__);
+        HELIX_SUBJECT_DEBUG_REGISTER(&s_date_subject, "clock_date_text", LV_SUBJECT_TYPE_STRING);
 
         // Uptime text (e.g. "Up: 3d 14h")
         lv_subject_init_string(&s_uptime_subject, s_uptime_buffer, nullptr, sizeof(s_uptime_buffer),
                                "");
         s_subjects.publish("clock_uptime_text", &s_uptime_subject);
-        SubjectDebugRegistry::instance().register_subject(
-            &s_uptime_subject, "clock_uptime_text", LV_SUBJECT_TYPE_STRING, __FILE__, __LINE__);
+        HELIX_SUBJECT_DEBUG_REGISTER(&s_uptime_subject, "clock_uptime_text",
+                                     LV_SUBJECT_TYPE_STRING);
 
         // Size mode (0=compact/1x1, 1=normal/2x1, 2=expanded/2x2+)
         lv_subject_init_int(&s_size_mode_subject, 1);
         s_subjects.publish("clock_size_mode", &s_size_mode_subject);
-        SubjectDebugRegistry::instance().register_subject(&s_size_mode_subject, "clock_size_mode",
-                                                          LV_SUBJECT_TYPE_INT, __FILE__, __LINE__);
+        HELIX_SUBJECT_DEBUG_REGISTER(&s_size_mode_subject, "clock_size_mode", LV_SUBJECT_TYPE_INT);
 
         spdlog::debug("[ClockWidget] Subjects initialized");
     });
@@ -285,7 +266,7 @@ void ClockWidget::update_clock() {
     }
 
     // Uptime from /proc/uptime
-    char uptime_buf[32];
+    char uptime_buf[64];
     format_uptime(uptime_buf, sizeof(uptime_buf));
     lv_subject_copy_string(&s_uptime_subject, uptime_buf);
 }

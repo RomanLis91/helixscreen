@@ -220,6 +220,11 @@ This is different from `sounds_enabled` — that toggle mutes playback but still
 **Values:** a two-letter ISO 3166 country code such as `"US"`, `"DE"` or `"GB"`, or `""`
 **Description:** The Wi-Fi country HelixScreen applies at every start. Without one the radio stays in a restricted worldwide mode and usually can't find 5 GHz networks until it has joined a 2.4 GHz one. Empty leaves the country to your printer's system. Change via Settings > Connection > Network Settings > Country.
 
+### `wifi_country_last_seen`
+**Type:** string
+**Default:** `""`
+**Description:** The last country the Wi-Fi radio itself reported, recorded by HelixScreen. When `wifi_country` is empty and the radio starts in the restricted worldwide mode, for example after a firmware update reset it, HelixScreen sets this country again. A country the radio already reports is never changed. Not something you normally edit.
+
 ### `language`
 **Type:** string
 **Default:** `"en"`
@@ -1106,7 +1111,7 @@ Connection settings are in the `printer` section:
 ### `moonraker_api_key`
 **Type:** string or false
 **Default:** `false`
-**Description:** API key if Moonraker authentication is enabled. Set to `false` if no authentication.
+**Description:** The printer's Moonraker API key, needed when Moonraker has `force_logins` enabled. HelixScreen sends it only to this printer's `moonraker_host` and `moonraker_port`. Set to `false` when Moonraker trusts the screen without one. A wrong key is worse than none, because Moonraker refuses it even from a trusted address. [How to get the key](TROUBLESHOOTING.md#unauthorized-everywhere-moonraker-requires-a-login).
 
 ### `moonraker_connection_timeout_ms`
 **Type:** integer

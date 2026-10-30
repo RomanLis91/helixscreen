@@ -28,6 +28,7 @@
   <translation tag="%d-%d" ja="%d〜%d"/>
   <translation tag="%d-%d°C" ja="%d〜%d°C"/>
   <translation tag="%d:%02d left" ja="残り %d:%02d"/>
+  <translation tag="%dd %dh" ja="%d日%d時間"/>
   <translation tag="%dh" ja="%d時間"/>
   <translation tag="%dh %02dm" ja="%d時間%02d分"/>
   <translation tag="%dh %dm" ja="%d時間%d分"/>
@@ -43,6 +44,7 @@
   <translation tag="%s needs filament in %s, which is empty — this print will run out." ja="%s は %s のフィラメントを必要としますが、空です — この印刷は途中で切れます。"/>
   <translation tag="%s unsaved" ja="%s 未保存"/>
   <translation tag="%s uses %s, which has filament but no material set — the printer will not start until you set it." ja="%s は %s を使用しますが、フィラメントはあるのに材料が設定されていません。設定するまでプリンターは開始しません。"/>
+  <translation tag="%s uses %s, which has filament but no material set. A calibration this print runs needs it." ja="%s は %s を使用しますが、フィラメントはあるのに材料が設定されていません。この印刷のキャリブレーションに必要です。"/>
   <translation tag="%s: %.0fg of %.0fg needed" ja="%s: %.0fg（必要 %.0fg）"/>
   <translation tag="%u layers" ja="%uレイヤー"/>
   <translation tag="%zu events queued" ja="%zu 件のイベントを待機中"/>
@@ -125,6 +127,7 @@
   <translation tag="3. Save the position" ja="3. 位置を保存します"/>
   <translation tag="30 minutes" ja="30分"/>
   <translation tag="30 seconds" ja="30秒"/>
+  <translation tag="32 characters, 0-9 and a-f" ja="32文字、0-9とa-f"/>
   <translation tag="3D Maze" ja="3D迷路"/>
   <translation tag="3D Pipes" ja="3Dパイプ"/>
   <translation tag="3D View" ja="3Dビュー"/>
@@ -199,6 +202,8 @@
   <translation tag="AMS Active: " ja="AMS 有効: "/>
   <translation tag="AMS is busy" ja="AMS はビジー状態です"/>
   <translation tag="AMS/MMU system not detected" ja="AMS/MMU システムが検出されません"/>
+  <translation tag="API Key" ja="APIキー"/>
+  <translation tag="API Key (if Moonraker requires a login)" ja="APIキー（Moonrakerがログインを要求する場合）"/>
   <translation tag="API not available" ja="APIが利用できません"/>
   <translation tag="APPEARANCE" ja="外観"/>
   <translation tag="AUTO FANS" ja="自動ファン"/>
@@ -237,6 +242,7 @@
   <translation tag="Add [include helix-plr/*.cfg] to printer.cfg, so a resume reloads the mesh the print started with" ja="printer.cfg に [include helix-plr/*.cfg] を追加し、再開時に印刷開始時のメッシュを読み込み直します"/>
   <translation tag="Add custom filament" ja="カスタムフィラメントを追加"/>
   <translation tag="Add page" ja="ページを追加"/>
+  <translation tag="Add to Mainsail/Fluidd Webcams" ja="Mainsail/Fluiddのウェブカメラに追加"/>
   <translation tag="Add to Queue" ja="キューに追加"/>
   <translation tag="Add to Spoolman + label" ja="Spoolman に追加 + ラベル"/>
   <translation tag="Added" ja="追加済み"/>
@@ -280,6 +286,7 @@
   <translation tag="Always show Android navigation bar instead of using gestures" ja="ジェスチャーの代わりにAndroidナビゲーションバーを常に表示"/>
   <translation tag="Ambient Transfer" ja="環境熱伝達"/>
   <translation tag="AmsIdentify" ja="AMSを識別"/>
+  <translation tag="An API key is 32 characters, each 0-9 or a-f." ja="APIキーは32文字で、各文字は0-9またはa-fです。"/>
   <translation tag="An accelerometer was detected on your printer." ja="プリンターで加速度センサーが検出されました。"/>
   <translation tag="An app on your network is asking to connect to this printer." ja="ネットワーク上のアプリがこのプリンターへの接続を求めています。"/>
   <translation tag="An error occurred during calibration." ja="キャリブレーション中にエラーが発生しました。"/>
@@ -782,6 +789,7 @@
   <translation tag="Configure quick buttons and standard macros" ja="クイックボタンと標準マクロを設定"/>
   <translation tag="Configure timelapse recording" ja="タイムラプス録画を設定"/>
   <translation tag="Configure your printer&apos;s cooling fans" ja="プリンターの冷却ファンを設定します"/>
+  <translation tag="Configured" ja="設定済み"/>
   <translation tag="Configured LED strip not found" ja="設定済みのLEDストリップが見つかりません"/>
   <translation tag="Configured aux fan not found" ja="設定済みの補助ファンが見つかりません"/>
   <translation tag="Configured filament sensor not found" ja="設定済みのフィラメントセンサーが見つかりません"/>
@@ -898,6 +906,7 @@
   <translation tag="Could not save the mesh as &apos;{}&apos;: {}" ja="メッシュを &apos;{}&apos; として保存できませんでした: {}"/>
   <translation tag="Could not save the printer image tags" ja="プリンター画像のタグの保存に失敗しました"/>
   <translation tag="Could not set the WiFi country" ja="WiFi の地域を設定できませんでした"/>
+  <translation tag="Could not set the material: {}" ja="材料を設定できませんでした: {}"/>
   <translation tag="Could not skip {}" ja="{} をスキップできませんでした"/>
   <translation tag="Could not start Bluetooth discovery" ja="Bluetooth の検出を開始できませんでした"/>
   <translation tag="Could not turn the heaters off" ja="ヒーターを切れませんでした"/>
@@ -1159,6 +1168,7 @@
   <translation tag="Endless Spool is turned off on this MMU" ja="この MMU ではエンドレススプールが無効です"/>
   <translation tag="Endless Spool state unknown" ja="エンドレススプールの状態は不明です"/>
   <translation tag="Ensure Happy Hare or AFC is installed and configured" ja="Happy Hare または AFC がインストールされ、設定されていることを確認してください"/>
+  <translation tag="Enter API Key" ja="APIキーを入力"/>
   <translation tag="Enter Current PIN" ja="現在の PIN を入力"/>
   <translation tag="Enter G-code command..." ja="G-code コマンドを入力..."/>
   <translation tag="Enter New PIN" ja="新しい PIN を入力"/>
@@ -1972,6 +1982,7 @@
   <translation tag="Linear rails interval" ja="リニアレールの間隔"/>
   <translation tag="Link Spools from Tags" ja="タグからスプールをリンク"/>
   <translation tag="Link a slot to the Spoolman spool its tag names" ja="タグが示す Spoolman スプールにスロットをリンク"/>
+  <translation tag="List the shared screen with this printer&apos;s webcams" ja="共有画面をこのプリンターのウェブカメラ一覧に表示"/>
   <translation tag="Listen to all theme sounds" ja="すべてのテーマサウンドを試聴"/>
   <translation tag="Live Z-offset, with baby steps and Save" ja="ライブ Z-Offset、微調整と保存つき"/>
   <translation tag="Live view from your webcam" ja="ウェブカメラのライブ表示"/>
@@ -2023,6 +2034,7 @@
   <translation tag="Lock the screen with your PIN" ja="PIN で画面をロック"/>
   <translation tag="Locked during print" ja="印刷中はロックされています"/>
   <translation tag="Log Level" ja="ログレベル"/>
+  <translation tag="Login Required" ja="ログインが必要です"/>
   <translation tag="Logs" ja="ログ"/>
   <translation tag="Long Press Time" ja="長押しの時間"/>
   <translation tag="Long-press any tile to enter edit mode — rearrange, resize, remove, or add widgets, and add extra pages for your preferred layout." ja="タイルを長押しして編集モードに入ります — ウィジェットの並べ替え、サイズ変更、削除、追加や、好みのレイアウトに合わせたページの追加ができます。"/>
@@ -2178,10 +2190,13 @@
   <translation tag="Month" ja="月"/>
   <translation tag="Moonraker" ja="Moonraker"/>
   <translation tag="Moonraker answered at {}." ja="{} でMoonrakerが応答しました。"/>
+  <translation tag="Moonraker at {} rejected the API key." ja="{} のMoonrakerがAPIキーを拒否しました。"/>
+  <translation tag="Moonraker at {} requires an API key." ja="{} のMoonrakerはAPIキーを要求しています。"/>
   <translation tag="Moonraker has no G-code folder." ja="MoonrakerにG-codeフォルダーがありません。"/>
   <translation tag="Moonraker is connected to Spoolman, which tracks your spools and how much filament is left. Browse them on the Spoolman screen." ja="MoonrakerはSpoolmanに接続されており、スプールとフィラメントの残量を管理します。Spoolman画面で一覧を確認できます。"/>
   <translation tag="Moonraker is not responding at {}. It runs on this printer, so check that the Klipper and Moonraker services started." ja="{} の Moonraker が応答しません。Moonraker はこのプリンター上で動作しているため、Klipper と Moonraker のサービスが起動しているか確認してください。"/>
   <translation tag="Moonraker keeps a queue of prints to run one after another. View it in the job queue." ja="Moonrakerは印刷を順番に実行するキューを保持します。ジョブキューで確認できます。"/>
+  <translation tag="Moonraker refused the login" ja="Moonrakerがログインを拒否しました"/>
   <translation tag="Moonraker restarted but Spoolman not connected. Check server." ja="Moonraker は再起動しましたが Spoolman に未接続です。サーバーを確認してください。"/>
   <translation tag="Moonraker restarting...&#10;Waiting for reconnection..." ja="Moonraker再起動中...&#10;再接続を待機中..."/>
   <translation tag="Moonraker&apos;s Python is too old for this feature." ja="MoonrakerのPythonがこの機能には古すぎます。"/>
@@ -3314,6 +3329,7 @@
   <translation tag="Session Duration" ja="セッション継続時間"/>
   <translation tag="Session Start" ja="セッション開始"/>
   <translation tag="Set " ja="設定 "/>
+  <translation tag="Set %s to %s" ja="%s を %s に設定"/>
   <translation tag="Set Active" ja="アクティブに設定"/>
   <translation tag="Set PIN" ja="PIN を設定"/>
   <translation tag="Set and watch the bed temperature" ja="ベッド温度の設定と監視"/>
@@ -3355,6 +3371,7 @@
   <translation tag="Show temp for" ja="温度表示対象"/>
   <translation tag="Show text labels on icon-only home screen widgets" ja="アイコンのみのホーム画面ウィジェットにテキストラベルを表示"/>
   <translation tag="Show this screen as a webcam in Mainsail and Fluidd" ja="この画面をMainsailとFluiddでウェブカメラとして表示"/>
+  <translation tag="Show this screen in a web browser" ja="この画面をウェブブラウザで表示"/>
   <translation tag="Show up/down buttons on long lists" ja="長いリストに上下ボタンを表示"/>
   <translation tag="Show whatever curves you last had visible on the full graph." ja="フルグラフで最後に表示していた曲線を表示します。"/>
   <translation tag="Showing the 50 newest files. See more in the printer&apos;s web UI." ja="最新の50ファイルを表示しています。それ以外はプリンターのWeb画面で確認してください。"/>
@@ -3382,6 +3399,8 @@
   <translation tag="Sleep {} min" ja="{}分でスリープ"/>
   <translation tag="Sliced colors" ja="スライスした色"/>
   <translation tag="Sliced for a Different Setup" ja="別の構成用にスライスされています"/>
+  <translation tag="Sliced for a High Flow nozzle on T{}; the printer has a standard one." ja="High Flowノズル（T{}）用にスライスされています。プリンターは標準ノズルです。"/>
+  <translation tag="Sliced for a standard nozzle on T{}; the printer has High Flow." ja="標準ノズル（T{}）用にスライスされています。プリンターはHigh Flowノズルです。"/>
   <translation tag="Sliced for a {:g} mm nozzle on T{}; the printer has {:g} mm." ja="{:g} mmノズル（T{}）用にスライスされています。プリンターは{:g} mmです。"/>
   <translation tag="Sliced for {}, not {}." ja="{}用にスライスされています。{}用ではありません。"/>
   <translation tag="Slicer" ja="スライサー"/>
@@ -3858,6 +3877,8 @@
   <translation tag="This printer has no automatic unload. Cut the filament at the head and pull it out by hand." ja="このプリンターには自動アンロード機能がありません。ヘッド部分でフィラメントを切り、手で引き抜いてください。"/>
   <translation tag="This printer looks like a {} ({}% confidence), but it is set up as a {}. A wrong type applies incorrect pre-print options and presets." ja="このプリンターは {} のようです（信頼度 {}%）が、{} として設定されています。誤ったタイプでは不正確な印刷前オプションとプリセットが適用されます。"/>
   <translation tag="This printer&apos;s INDX macros are missing: {}" ja="このプリンターのINDXマクロに不足があります: {}"/>
+  <translation tag="This printer&apos;s Moonraker rejected its API key. Check the key in Settings &gt; Connection." ja="このプリンターのMoonrakerがAPIキーを拒否しました。設定 &gt; 接続 でキーを確認してください。"/>
+  <translation tag="This printer&apos;s Moonraker requires a login. Add its API key in Settings &gt; Connection." ja="このプリンターのMoonrakerはログインを要求しています。設定 &gt; 接続 でAPIキーを追加してください。"/>
   <translation tag="This printer&apos;s network service controls the WiFi radio" ja="このプリンターのネットワークサービスが WiFi 無線を制御しています"/>
   <translation tag="This printer&apos;s network service manages saved WiFi networks" ja="このプリンターのネットワークサービスが保存済みの WiFi ネットワークを管理しています"/>
   <translation tag="This printer&apos;s screen has not shared a layout" ja="このプリンターの画面はレイアウトを共有していません"/>
@@ -4082,6 +4103,7 @@
   <translation tag="Up next: {}" ja="次の印刷：{}"/>
   <translation tag="Up next: {} (+{})" ja="次の印刷：{}（+{}）"/>
   <translation tag="Up to date" ja="最新の状態です"/>
+  <translation tag="Up: %s" ja="稼働時間: %s"/>
   <translation tag="Update" ja="更新"/>
   <translation tag="Update Available" ja="更新あり"/>
   <translation tag="Update Channel" ja="更新チャンネル"/>

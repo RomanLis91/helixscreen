@@ -26,6 +26,8 @@
 #include "i_moonraker_api.h"
 #include "json_utils.h"
 #include "klippy_notification.h"
+#include "moonraker_auth.h"
+#include "moonraker_auth_http.h"
 #include "printer_state.h"
 #include "system/telemetry_manager.h"
 #include "translation_loader.h"
@@ -100,6 +102,9 @@ MoonrakerClient::MoonrakerClient(EventLoopPtr loop)
       reconnect_min_delay_ms_(200) // Default 200ms
       ,
       reconnect_max_delay_ms_(2000) { // Default 2 seconds
+    upgrade_request_ = std::make_shared<HttpRequest>();
+    setHttpRequest(upgrade_request_);
+    helix::moonraker_auth::install_http_request_hook();
 }
 
 void MoonrakerClient::start_health_timer() {
@@ -517,6 +522,12 @@ int MoonrakerClient::connect(const char* url, helix::SharedCallback<void()> on_c
     // Connect
     http_headers headers;
     headers["User-Agent"] = HELIX_USER_AGENT;
+    // The upgrade bypasses the request hook, and the previous printer's key must not
+    // survive into a connection to another one.
+    upgrade_request_->headers.erase(helix::moonraker_auth::kApiKeyHeader);
+    if (const std::string key = helix::moonraker_auth::key_for_url(url ? url : ""); !key.empty()) {
+        headers[helix::moonraker_auth::kApiKeyHeader] = key;
+    }
     return open(url, headers);
 }
 

@@ -18,6 +18,7 @@
 #include "start_block_steps.h"
 #include "thermal_rate_model.h"
 
+#include <algorithm>
 #include <atomic>
 #include <chrono>
 #include <cstdint>
@@ -32,7 +33,46 @@
 
 namespace helix {
 struct PrintStartAnalysis;
-}
+
+/**
+ * @brief A pre-print step that emits signals for other phases on its own
+ *
+ * A nozzle clean that parks at the purge position and pushes filament to check
+ * flow looks exactly like the purge it is not. A profile pattern declares the
+ * phases its step owns (`owns`); while the step runs, signals for them are the
+ * step's, and the display stays on it. The step's own phase and the heating
+ * it does for itself leave it running; any other step's signal ends it.
+ */
+struct OwningStep {
+    PrintStartPhase phase = PrintStartPhase::IDLE; ///< IDLE: no step owns anything
+    std::vector<PrintStartPhase> owns;
+
+    enum class Verdict {
+        Absorb, ///< the step emitted it; it names no phase change
+        Pass,   ///< applies as usual and the step runs on
+        Ends,   ///< applies as usual and the step is over
+    };
+
+    [[nodiscard]] Verdict judge(PrintStartPhase signal) const {
+        if (phase == PrintStartPhase::IDLE) {
+            return Verdict::Pass;
+        }
+        if (std::find(owns.begin(), owns.end(), signal) != owns.end()) {
+            return Verdict::Absorb;
+        }
+        switch (signal) {
+        case PrintStartPhase::IDLE:
+        case PrintStartPhase::INITIALIZING:
+        case PrintStartPhase::HEATING_BED:
+        case PrintStartPhase::SOAKING:
+        case PrintStartPhase::HEATING_NOZZLE:
+            return Verdict::Pass;
+        default:
+            return signal == phase ? Verdict::Pass : Verdict::Ends;
+        }
+    }
+};
+} // namespace helix
 
 /**
  * @file print_start_collector.h
@@ -66,11 +106,17 @@ class PrintStartCollector : public std::enable_shared_from_this<PrintStartCollec
     [[nodiscard]] int get_current_phase_elapsed_seconds() const;
 
     /**
-     * @brief Construct a PrintStartCollector
+     * @brief Create a PrintStartCollector
+     *
+     * Network callbacks hold references, so the last one can drop on any
+     * thread. Destruction always runs on the main thread, because the
+     * destructor deletes an LVGL timer.
+     *
      * @param client helix::IMoonrakerClient for registering callbacks
      * @param state helix::PrinterState to update with phase progress
      */
-    PrintStartCollector(helix::IMoonrakerClient& client, helix::PrinterState& state);
+    static std::shared_ptr<PrintStartCollector> create(helix::IMoonrakerClient& client,
+                                                       helix::PrinterState& state);
 
     ~PrintStartCollector();
 
@@ -347,6 +393,8 @@ class PrintStartCollector : public std::enable_shared_from_this<PrintStartCollec
     heater_waited_on(const helix::WaitLine& line, const std::string& chamber_heater);
 
   private:
+    PrintStartCollector(helix::IMoonrakerClient& client, helix::PrinterState& state);
+
     /**
      * @brief Handle incoming G-code response
      */
@@ -389,6 +437,10 @@ class PrintStartCollector : public std::enable_shared_from_this<PrintStartCollec
      */
     void apply_profile_match(const PrintStartProfile::MatchResult& match,
                              bool marks_real_signal = true, bool live_state = false);
+
+    /// Judge a signal for @p phase against the owning step (helix::OwningStep):
+    /// true when the step owns it, ending the step when another step begins.
+    bool absorbed_by_owning_step(helix::PrintStartPhase phase);
 
     /// Show a gantry-leveling / Z-tilt phase inferred from the configured
     /// probe points. Inference, not narration: it never mutes the proactive
@@ -945,6 +997,8 @@ class PrintStartCollector : public std::enable_shared_from_this<PrintStartCollec
     helix::LevelingDescentTracker leveling_descents_;
     /// Stationary-purge stretch fed by check_purge_shape(); guarded by state_mutex_.
     helix::PurgeFlowTracker purge_flow_;
+    /// The running step that owns other phases' signals; guarded by state_mutex_.
+    helix::OwningStep owning_step_;
 
     /// Max gap between consecutive probe lines before resetting counters.
     /// Handles printers that emit "probe at" for non-mesh operations (e.g.

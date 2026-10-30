@@ -28,6 +28,7 @@ translations:
   '%d tools': '%d ツール'
   '%d units': '%dユニット'
   '%d:%02d left': '残り %d:%02d'
+  '%dd %dh': '%d日%d時間'
   '%dh': '%d時間'
   '%dh %02dm': '%d時間%02d分'
   '%dh %dm': '%d時間%d分'
@@ -43,6 +44,7 @@ translations:
   '%s needs filament in %s, which is empty — this print will run out.': '%s は %s のフィラメントを必要としますが、空です — この印刷は途中で切れます。'
   '%s unsaved': '%s 未保存'
   '%s uses %s, which has filament but no material set — the printer will not start until you set it.': '%s は %s を使用しますが、フィラメントはあるのに材料が設定されていません。設定するまでプリンターは開始しません。'
+  '%s uses %s, which has filament but no material set. A calibration this print runs needs it.': '%s は %s を使用しますが、フィラメントはあるのに材料が設定されていません。この印刷のキャリブレーションに必要です。'
   '%s: %.0fg of %.0fg needed': '%s: %.0fg（必要 %.0fg）'
   '%u layers': '%uレイヤー'
   '%zu events queued': '%zu 件のイベントを待機中'
@@ -128,6 +130,7 @@ translations:
 
   30 minutes: 30分
   30 seconds: 30秒
+  32 characters, 0-9 and a-f: '32文字、0-9とa-f'
   3D Maze: 3D迷路
   3D Pipes: 3Dパイプ
   3D View: 3Dビュー
@@ -202,6 +205,8 @@ translations:
   'AMS Active: ': 'AMS 有効: '
   AMS is busy: AMS はビジー状態です
   AMS/MMU system not detected: 'AMS/MMU システムが検出されません'
+  API Key: 'APIキー'
+  API Key (if Moonraker requires a login): 'APIキー（Moonrakerがログインを要求する場合）'
   API not available: APIが利用できません
   APPEARANCE: 外観
   AUTO FANS: 自動ファン
@@ -240,6 +245,7 @@ translations:
   Add [include helix-plr/*.cfg] to printer.cfg, so a resume reloads the mesh the print started with: printer.cfg に [include helix-plr/*.cfg] を追加し、再開時に印刷開始時のメッシュを読み込み直します
   Add custom filament: カスタムフィラメントを追加
   Add page: 'ページを追加'
+  Add to Mainsail/Fluidd Webcams: 'Mainsail/Fluiddのウェブカメラに追加'
   Add to Queue: キューに追加
   Added: 追加済み
   Added to Spoolman: Spoolman に追加しました
@@ -282,6 +288,7 @@ translations:
   Always show Android navigation bar instead of using gestures: ジェスチャーの代わりにAndroidナビゲーションバーを常に表示
   Ambient Transfer: 環境熱伝達
   AmsIdentify: AMSを識別
+  An API key is 32 characters, each 0-9 or a-f.: 'APIキーは32文字で、各文字は0-9またはa-fです。'
   An accelerometer was detected on your printer.: プリンターで加速度センサーが検出されました。
   An app on your network is asking to connect to this printer.: 'ネットワーク上のアプリがこのプリンターへの接続を求めています。'
   An error occurred during calibration.: キャリブレーション中にエラーが発生しました。
@@ -798,6 +805,7 @@ translations:
   Configure quick buttons and standard macros: クイックボタンと標準マクロを設定
   Configure timelapse recording: タイムラプス録画を設定
   Configure your printer's cooling fans: プリンターの冷却ファンを設定します
+  Configured: '設定済み'
   Configured LED strip not found: '設定済みのLEDストリップが見つかりません'
   Configured aux fan not found: '設定済みの補助ファンが見つかりません'
   Configured filament sensor not found: '設定済みのフィラメントセンサーが見つかりません'
@@ -937,6 +945,7 @@ translations:
   "Could not save the mesh as '{}': {}": "メッシュを '{}' として保存できませんでした: {}"
   Could not save the printer image tags: プリンター画像のタグの保存に失敗しました
   Could not set the WiFi country: WiFi の地域を設定できませんでした
+  'Could not set the material: {}': '材料を設定できませんでした: {}'
   Could not skip {}: '{} をスキップできませんでした'
   Could not start Bluetooth discovery: Bluetooth の検出を開始できませんでした
   Could not update filaments: フィラメントを更新できませんでした
@@ -1209,6 +1218,7 @@ translations:
   Endless Spool is turned off on this MMU: 'この MMU ではエンドレススプールが無効です'
   Endless Spool state unknown: エンドレススプールの状態は不明です
   Ensure Happy Hare or AFC is installed and configured: Happy Hare または AFC がインストールされ、設定されていることを確認してください
+  Enter API Key: 'APIキーを入力'
   Enter Current PIN: 現在の PIN を入力
   Enter G-code command...: G-code コマンドを入力...
   Enter New PIN: 新しい PIN を入力
@@ -2055,6 +2065,7 @@ translations:
   Linear rails interval: 'リニアレールの間隔'
   Link Spools from Tags: 'タグからスプールをリンク'
   Link a slot to the Spoolman spool its tag names: 'タグが示す Spoolman スプールにスロットをリンク'
+  List the shared screen with this printer's webcams: '共有画面をこのプリンターのウェブカメラ一覧に表示'
   Listen to all theme sounds: すべてのテーマサウンドを試聴
   Live Z-offset, with baby steps and Save: ライブ Z-Offset、微調整と保存つき
   Live view from your webcam: ウェブカメラのライブ表示
@@ -2105,6 +2116,7 @@ translations:
   Lock the screen with your PIN: PIN で画面をロック
   Locked during print: 印刷中はロックされています
   Log Level: ログレベル
+  Login Required: 'ログインが必要です'
   Logs: ログ
   Long Press Time: '長押しの時間'
   'Long-press any tile to enter edit mode — rearrange, resize, remove, or add widgets, and add extra pages for your preferred layout.': タイルを長押しして編集モードに入ります — ウィジェットの並べ替え、サイズ変更、削除、追加や、好みのレイアウトに合わせたページの追加ができます。
@@ -2260,11 +2272,14 @@ translations:
   Monitoring: モニタリング
   Month: 月
   Moonraker: Moonraker
+  Moonraker at {} rejected the API key.: '{} のMoonrakerがAPIキーを拒否しました。'
+  Moonraker at {} requires an API key.: '{} のMoonrakerはAPIキーを要求しています。'
   Moonraker has no G-code folder.: "MoonrakerにG-codeフォルダーがありません。"
   ? Moonraker is connected to Spoolman, which tracks your spools and how much filament is left. Browse them on the Spoolman screen.
   : 'MoonrakerはSpoolmanに接続されており、スプールとフィラメントの残量を管理します。Spoolman画面で一覧を確認できます。'
   Moonraker is not responding at {}. It runs on this printer, so check that the Klipper and Moonraker services started.: '{} の Moonraker が応答しません。Moonraker はこのプリンター上で動作しているため、Klipper と Moonraker のサービスが起動しているか確認してください。'
   Moonraker keeps a queue of prints to run one after another. View it in the job queue.: 'Moonrakerは印刷を順番に実行するキューを保持します。ジョブキューで確認できます。'
+  Moonraker refused the login: 'Moonrakerがログインを拒否しました'
   Moonraker restarted but Spoolman not connected. Check server.: Moonraker は再起動しましたが
     Spoolman に未接続です。サーバーを確認してください。
   ? "Moonraker restarting...\nWaiting for reconnection..."
@@ -3435,6 +3450,7 @@ translations:
   Session Duration: セッション継続時間
   Session Start: セッション開始
   'Set ': '設定 '
+  Set %s to %s: '%s を %s に設定'
   Set Active: アクティブに設定
   Set PIN: PIN を設定
   Set and watch the bed temperature: ベッド温度の設定と監視
@@ -3477,6 +3493,7 @@ translations:
   Show temp for: 温度表示対象
   Show text labels on icon-only home screen widgets: アイコンのみのホーム画面ウィジェットにテキストラベルを表示
   Show this screen as a webcam in Mainsail and Fluidd: 'この画面をMainsailとFluiddでウェブカメラとして表示'
+  Show this screen in a web browser: 'この画面をウェブブラウザで表示'
   Show up/down buttons on long lists: 長いリストに上下ボタンを表示
   Show whatever curves you last had visible on the full graph.: フルグラフで最後に表示していた曲線を表示します。
   Showing the 50 newest files. See more in the printer's web UI.: '最新の50ファイルを表示しています。それ以外はプリンターのWeb画面で確認してください。'
@@ -3504,6 +3521,8 @@ translations:
   Sleep {} min: '{}分でスリープ'
   Sliced colors: スライスした色
   Sliced for a Different Setup: '別の構成用にスライスされています'
+  Sliced for a High Flow nozzle on T{}; the printer has a standard one.: 'High Flowノズル（T{}）用にスライスされています。プリンターは標準ノズルです。'
+  Sliced for a standard nozzle on T{}; the printer has High Flow.: '標準ノズル（T{}）用にスライスされています。プリンターはHigh Flowノズルです。'
   Sliced for a {:g} mm nozzle on T{}; the printer has {:g} mm.: '{:g} mmノズル（T{}）用にスライスされています。プリンターは{:g} mmです。'
   Sliced for {}, not {}.: '{}用にスライスされています。{}用ではありません。'
   Slicer: スライサー
@@ -4024,6 +4043,8 @@ translations:
   ? This printer looks like a {} ({}% confidence), but it is set up as a {}. A wrong type applies incorrect pre-print options and presets.
   : このプリンターは {} のようです（信頼度 {}%）が、{} として設定されています。誤ったタイプでは不正確な印刷前オプションとプリセットが適用されます。
   "This printer's INDX macros are missing: {}": "このプリンターのINDXマクロに不足があります: {}"
+  This printer's Moonraker rejected its API key. Check the key in Settings > Connection.: 'このプリンターのMoonrakerがAPIキーを拒否しました。設定 > 接続 でキーを確認してください。'
+  This printer's Moonraker requires a login. Add its API key in Settings > Connection.: 'このプリンターのMoonrakerはログインを要求しています。設定 > 接続 でAPIキーを追加してください。'
   This printer's network service controls the WiFi radio: このプリンターのネットワークサービスが WiFi 無線を制御しています
   This printer's network service manages saved WiFi networks: このプリンターのネットワークサービスが保存済みの WiFi ネットワークを管理しています
   This printer's screen has not shared a layout: "このプリンターの画面はレイアウトを共有していません"
@@ -4262,6 +4283,7 @@ translations:
   'Up next: {}': '次の印刷：{}'
   'Up next: {} (+{})': '次の印刷：{}（+{}）'
   Up to date: 最新の状態です
+  'Up: %s': '稼働時間: %s'
   Update: 更新
   Update Available: 更新あり
   Update Channel: 更新チャンネル

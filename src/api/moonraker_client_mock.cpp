@@ -9,6 +9,7 @@
 #include "../tests/mocks/mock_printer_state.h"
 #include "app_globals.h"
 #include "chamber_heater_backend.h"
+#include "color_utils.h"
 #include "env_knobs.h"
 #include "gcode_parser.h"
 #include "hardware_object_table.h"
@@ -2208,9 +2209,11 @@ nlohmann::json MoonrakerClientMock::cfs_box_status_json() const {
     })");
     // HELIX_MOCK_CFS_BOXES lists the box addresses on the bus ("1,2,4"); box 1
     // is always present, every other listed box is empty. "none" is a K2 with
-    // no CFS: the firmware still publishes `box`, every address reading "None".
+    // no CFS: the firmware still publishes `box`, every address reading "None"
+    // and the box itself "disconnect".
     const char* boxes = std::getenv("HELIX_MOCK_CFS_BOXES");
     if (boxes && std::string_view(boxes) == "none") {
+        box["state"] = "disconnect";
         box["map"] = nlohmann::json::object();
         for (const char* unit : {"T1", "T2", "T3", "T4"}) {
             box[unit] = {{"state", "None"},
@@ -4282,18 +4285,7 @@ bool MoonrakerClientMock::start_print_internal(const std::string& filename) {
             std::lock_guard<std::mutex> lock(active_gcode_tool_mutex_);
             active_gcode_tool_colors_.clear();
             for (const auto& hex : meta.tool_colors) {
-                // tool_colors come as "#RRGGBB" or "RRGGBB" — parse defensively.
-                const char* p = hex.c_str();
-                if (*p == '#') {
-                    ++p;
-                }
-                uint32_t rgb = 0;
-                try {
-                    rgb = static_cast<uint32_t>(std::stoul(p, nullptr, 16)) & 0xFFFFFF;
-                } catch (...) {
-                    rgb = 0;
-                }
-                active_gcode_tool_colors_.push_back(rgb);
+                active_gcode_tool_colors_.push_back(helix::parse_hex_color(hex).value_or(0));
             }
         }
 

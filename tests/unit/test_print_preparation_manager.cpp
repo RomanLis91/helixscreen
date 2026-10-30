@@ -1215,6 +1215,38 @@ TEST_CASE_METHOD(HelixTestFixture, "PrintPreparationManager: a U1 start sends no
     REQUIRE(line_containing(lines, "BED_LEVEL") == "SET_PRINT_PREFERENCES BED_LEVEL=1");
 }
 
+TEST_CASE_METHOD(HelixTestFixture,
+                 "PrintPreparationManager: U1 flow calibration needs every used slot's material",
+                 "[print_preparation][pre_print_options][snapmaker_u1][preflight]") {
+    lv_init_safe();
+
+    PrinterState& printer_state = get_printer_state();
+    PrinterStateTestAccess::reset(printer_state);
+    printer_state.init_subjects(false);
+    printer_state.set_printer_type_sync("Snapmaker U1");
+    const PrePrintOption* flow =
+        printer_state.profile_state().pre_print_option_set().find("flow_calibrate");
+    REQUIRE(flow != nullptr);
+    REQUIRE(flow->needs_material);
+
+    PrintPreparationManager manager;
+    manager.set_dependencies(nullptr, &printer_state);
+    int flow_state = 1;
+    manager.set_option_state_provider(
+        [&flow_state](const std::string& id) { return id == "flow_calibrate" ? flow_state : 1; });
+    CHECK(manager.enabled_options_need_material());
+    flow_state = 0;
+    CHECK_FALSE(manager.enabled_options_need_material());
+
+    // A queued job's saved choice is asked first.
+    CHECK(manager.enabled_options_need_material([](const std::string&) { return 1; }));
+    flow_state = 1;
+    CHECK_FALSE(manager.enabled_options_need_material(
+        [](const std::string& id) { return id == "flow_calibrate" ? 0 : -1; }));
+    // A saved set that does not name the option falls through to the live state.
+    CHECK(manager.enabled_options_need_material([](const std::string&) { return -1; }));
+}
+
 // ============================================================================
 // T3b: build_pre_start_gcode_block — the actual join contract
 // ============================================================================
@@ -4039,13 +4071,11 @@ TEST_CASE_METHOD(HelixTestFixture,
     CHECK_FALSE(*completed);
 }
 
-TEST_CASE_METHOD(
-    HelixTestFixture,
-    "PrintPreparationManager: a staged start that loses its answer while Stop waits is "
-    "held",
-    "[print_preparation][remap][preparing_cancel]") {
-    // A timeout means Klipper is busy running the start: the job is held for
-    // the cancel, not failed, and the copy it is printing is not deleted.
+TEST_CASE_METHOD(HelixTestFixture,
+                 "PrintPreparationManager: a staged start that loses its answer stays preparing",
+                 "[print_preparation][remap][preparing_cancel][1898]") {
+    // A timeout means Klipper is busy running the start: the job stays
+    // preparing, Stop or no Stop, and the copy it is printing is not deleted.
     lv_init_safe();
     PrinterStateTestAccess::reset(get_printer_state());
     get_printer_state().init_subjects(false);
@@ -4070,10 +4100,15 @@ TEST_CASE_METHOD(
         api.job_mock().mock_modified_print_error(lost);
     }
 
+    const bool stop_waiting = GENERATE(true, false);
+    CAPTURE(stop_waiting);
+
     PrintPreparationManager manager;
     manager.set_dependencies(&api, &state);
     state.print_state().begin_preparing(PrintJobRef{kRemapFixture, "gcodes", ""});
-    state.print_state().note_preparing_cancel_requested();
+    if (stop_waiting) {
+        state.print_state().note_preparing_cancel_requested();
+    }
     manager.set_cached_file_size(123456);
     std::optional<bool> completed;
     manager.modify_and_print_with_remap(
@@ -4273,9 +4308,14 @@ TEST_CASE_METHOD(HelixTestFixture,
             CHECK(api.transfers_mock().download_destinations().size() == downloads_before);
             CHECK(api.job_mock().modified_prints().size() == modified_before);
             CHECK(api.job_mock().started_prints().empty());
-            CHECK_FALSE(state.print_state().has_preparing_job());
-            REQUIRE(completed.has_value());
-            CHECK_FALSE(*completed);
+            // A timeout leaves the job for the printer to settle; a dropped
+            // connection with no Stop waiting, like a refusal, fails it.
+            const bool lost_answer = c.error.command_may_still_run();
+            CHECK(state.print_state().has_preparing_job() == lost_answer);
+            CHECK(completed.has_value() == !lost_answer);
+            if (completed) {
+                CHECK_FALSE(*completed);
+            }
         }
         state.print_state().retire_preparing(helix::PreparingExit::Failed);
     }

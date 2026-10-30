@@ -57,10 +57,13 @@
 #include <chrono>
 #include <functional>
 #include <map>
+#include <memory>
 #include <mutex>
 #include <shared_mutex>
 #include <string>
 #include <vector>
+
+class HttpRequest; // NAMESPACE_OK: libhv's global type; the firmware's parse-only shim has none
 
 namespace helix {
 // SubscriptionId and kInvalidSubscriptionId are defined in i_moonraker_client.h
@@ -778,6 +781,10 @@ class MoonrakerClient : public hv::WebSocketClient, public IMoonrakerClient {
     std::function<void(ConnectionState, ConnectionState)> state_change_callback_;
     mutable std::mutex state_callback_mutex_; // Protect state_change_callback_ during destruction
     uint32_t connection_timeout_ms_;
+
+    // The upgrade request libhv sends, handed over once before any open(). open() only
+    // merges headers into it, so connect() sets or erases the API key here itself.
+    std::shared_ptr<HttpRequest> upgrade_request_;
 
     // Connection parameters (from config)
     uint32_t keepalive_interval_ms_;

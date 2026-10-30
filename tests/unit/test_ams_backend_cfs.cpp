@@ -7,6 +7,7 @@
 #include "ui_spool_canvas.h"
 #include "ui_update_queue.h"
 
+#include "../fake_moonraker_client.h"
 #include "../lvgl_test_fixture.h"
 #include "../lvgl_ui_test_fixture.h"
 #include "../test_helpers/filament_slot_override_store_test_access.h"
@@ -6264,10 +6265,10 @@ TEST_CASE("CFS drops the bypass declaration for a loaded bay even while stood do
 
 namespace {
 
-/// A stock `box` frame with nothing on the bus: every address reports the
-/// "None" state a K2 publishes for an empty one.
+/// A stock `box` frame with nothing on the bus, as a K2 without a CFS sends it:
+/// every address reports "None" and the box itself reports "disconnect".
 json make_empty_bus_box() {
-    json box = json::parse(R"({"state": "connect", "filament": 0, "enable": 1,
+    json box = json::parse(R"({"state": "disconnect", "filament": 0, "enable": 1,
                                "auto_refill": 0, "filament_useup": 1, "map": {}})");
     for (const char* unit : {"T1", "T2", "T3", "T4"}) {
         box[unit] = {{"state", "None"},
@@ -6338,6 +6339,322 @@ TEST_CASE("CFS with no unit on the bus feeds only the external spool", "[ams][cf
         CHECK_FALSE(cfs.is_bypass_active());
         CHECK(info.supports_bypass);
         CHECK(info.current_slot != helix::ui::kExternalSpoolSlot);
+    }
+}
+
+TEST_CASE("CFS boot frame with no unit answered yet is not an empty bus",
+          "[ams][cfs][bypass][1904][1933]") {
+    // A K2 with a CFS boots with its first full frame naming every address
+    // "None" (the units have not answered the RS-485 poll), while the box
+    // reports itself connected. The unit arrives later as a delta.
+    CfsRemapHelper cfs;
+    cfs.mark_running();
+    CfsTestAccess::set_filament_sensor(cfs, /*seen=*/true, /*detected=*/true);
+
+    json boot = make_empty_bus_box();
+    boot["state"] = "connect";
+    CfsTestAccess::handle_status(cfs, make_cfs_notification(boot));
+    REQUIRE(cfs.get_system_info().units.empty());
+
+    auto check_never_single_spool = [&] {
+        const auto info = cfs.get_system_info();
+        CHECK_FALSE(info.external_spool_only);
+        CHECK(info.presents_filament_system());
+        CHECK_FALSE(cfs.is_bypass_active());
+        CHECK(info.current_slot != helix::ui::kExternalSpoolSlot);
+    };
+    check_never_single_spool();
+
+    // A frame carrying only the toolhead sensor re-derives the loaded path.
+    CfsTestAccess::handle_status(cfs, json{{"params", json::array({json::object(), 0})}});
+    check_never_single_spool();
+
+    SECTION("the unit answering keeps it a filament system") {
+        json full =
+            make_single_unit_box({"101001", "-1", "-1", "-1"}, {"01A1A1A", "-1", "-1", "-1"});
+        CfsTestAccess::handle_status(cfs, make_cfs_notification(json{{"T1", full["T1"]}}));
+        REQUIRE_FALSE(cfs.get_system_info().units.empty());
+        check_never_single_spool();
+    }
+
+    SECTION("a box state without a value decides nothing") {
+        json bare = make_empty_bus_box();
+        bare.erase("state");
+        CfsRemapHelper fresh;
+        CfsTestAccess::handle_status(fresh, make_cfs_notification(bare));
+        CHECK_FALSE(fresh.get_system_info().external_spool_only);
+    }
+
+    SECTION("the box reporting disconnect settles it as an empty bus") {
+        CfsTestAccess::handle_status(cfs, make_cfs_notification(json{{"state", "disconnect"}}));
+        CHECK(cfs.get_system_info().external_spool_only);
+        CHECK(cfs.is_bypass_active());
+
+        // And back: the box reconnecting with no unit yet is undecided again.
+        CfsTestAccess::handle_status(cfs, make_cfs_notification(json{{"state", "connect"}}));
+        CHECK_FALSE(cfs.get_system_info().external_spool_only);
+    }
+}
+
+namespace {
+
+/// configfile.settings naming one CFS at address 1, as a K2 Plus saves it.
+json registered_unit_settings() {
+    return json::parse(R"({"auto_addr": {"mb_addr_table_uniids":
+        [[19, 103, 59, 72, 36, 34, 176, 3, 54, 53, 52, 52], [0], [0], [0]]}})");
+}
+
+json no_unit_settings() {
+    return json::parse(R"({"auto_addr": {"mb_addr_table_uniids": [[0], [0], [0], [0]]}})");
+}
+
+/// T1 as a K2 Plus reports it once bus discovery reaches the unit.
+json k2_plus_t1_connected() {
+    return json::parse(R"({"state": "connect", "filament": "None", "filament_detected": "None",
+        "mode": "0", "version": "1.1.3", "sn": "10000882925L125DBZC",
+        "uuid": [19, 103, 59, 72, 36, 34, 176, 3, 54, 53, 52, 52],
+        "vender": ["unknown", "unknown", "unknown", "unknown"],
+        "remain_len": ["100", "100", "100", "100"],
+        "color_value": ["0FFFFFF", "0C12E1F", "0101820", "0000000"],
+        "material_type": ["101001", "101001", "101001", "101001"],
+        "change_color_num": ["2", "1", "0", "0"]})");
+}
+
+/// The box a K2 Plus with its CFS attached publishes from Klipper startup: the
+/// box state "None" and every address "None".
+json k2_plus_startup_box() {
+    json box = make_empty_bus_box();
+    box["state"] = "None";
+    return box;
+}
+
+/// A K2 that is never single-spool: no external_spool_only, no bypass, and the
+/// toolhead filament claimed by no external spool.
+void check_not_single_spool(const AmsBackendCfs& cfs) {
+    const auto info = cfs.get_system_info();
+    CHECK_FALSE(info.external_spool_only);
+    CHECK(info.presents_filament_system());
+    CHECK_FALSE(cfs.is_bypass_active());
+    CHECK(info.current_slot != helix::ui::kExternalSpoolSlot);
+}
+
+/// The toolhead sensor reads filament, so a premature verdict would engage -2.
+void feed_toolhead_filament(AmsBackendCfs& cfs) {
+    CfsTestAccess::set_filament_sensor(cfs, /*seen=*/true, /*detected=*/true);
+    CfsTestAccess::handle_status(cfs, json{{"params", json::array({json::object(), 0})}});
+}
+
+} // namespace
+
+TEST_CASE("CFS with a registered unit waits out the boot-time empty bus",
+          "[ams][cfs][bypass][1904][1933]") {
+    // The measured K2 Plus cold boot: box "None" at Klipper startup and ready,
+    // "disconnect" about 7 s after ready, T1 answering at about 38 s, then the
+    // box "connect".
+    CfsRemapHelper cfs;
+    cfs.mark_running();
+    CfsTestAccess::answer_unit_registration(cfs, registered_unit_settings());
+
+    CfsTestAccess::handle_status(cfs, make_cfs_notification(k2_plus_startup_box()));
+    feed_toolhead_filament(cfs);
+    check_not_single_spool(cfs);
+
+    CfsTestAccess::handle_status(cfs, make_cfs_notification(json{{"state", "disconnect"}}));
+    feed_toolhead_filament(cfs);
+    check_not_single_spool(cfs);
+
+    CfsTestAccess::handle_status(cfs, make_cfs_notification(json{{"T1", k2_plus_t1_connected()}}));
+    REQUIRE_FALSE(cfs.get_system_info().units.empty());
+    check_not_single_spool(cfs);
+
+    CfsTestAccess::handle_status(cfs, make_cfs_notification(json{{"state", "connect"}}));
+    check_not_single_spool(cfs);
+
+    SECTION("the settle time passing after the unit answered changes nothing") {
+        CfsTestAccess::expire_unit_settle(cfs);
+        check_not_single_spool(cfs);
+    }
+}
+
+TEST_CASE("CFS with no registered unit is single-spool when the box reports disconnect",
+          "[ams][cfs][bypass][1904][1933]") {
+    CfsRemapHelper cfs;
+    cfs.mark_running();
+
+    SECTION("an empty address table") {
+        CfsTestAccess::answer_unit_registration(cfs, no_unit_settings());
+    }
+    SECTION("no address table at all") {
+        CfsTestAccess::answer_unit_registration(cfs, json::object());
+    }
+
+    CfsTestAccess::handle_status(cfs, make_cfs_notification(k2_plus_startup_box()));
+    CHECK_FALSE(cfs.get_system_info().external_spool_only);
+
+    CfsTestAccess::handle_status(cfs, make_cfs_notification(json{{"state", "disconnect"}}));
+    feed_toolhead_filament(cfs);
+    const auto info = cfs.get_system_info();
+    CHECK(info.external_spool_only);
+    CHECK_FALSE(info.supports_bypass);
+    CHECK(cfs.is_bypass_active());
+    CHECK(info.current_slot == helix::ui::kExternalSpoolSlot);
+}
+
+TEST_CASE("CFS with a registered unit that never answers is single-spool after the settle time",
+          "[ams][cfs][bypass][1904][1933]") {
+    // A CFS unplugged since printer.cfg last saved it still leaves its entry.
+    CfsRemapHelper cfs;
+    cfs.mark_running();
+    CfsTestAccess::answer_unit_registration(cfs, registered_unit_settings());
+    CfsTestAccess::handle_status(cfs, make_cfs_notification(k2_plus_startup_box()));
+    CfsTestAccess::handle_status(cfs, make_cfs_notification(json{{"state", "disconnect"}}));
+    feed_toolhead_filament(cfs);
+    check_not_single_spool(cfs);
+
+    CfsTestAccess::expire_unit_settle(cfs);
+    const auto info = cfs.get_system_info();
+    CHECK(info.external_spool_only);
+    CHECK_FALSE(info.supports_bypass);
+    CHECK(cfs.is_bypass_active());
+    CHECK(info.current_slot == helix::ui::kExternalSpoolSlot);
+
+    SECTION("a unit answering late still ends it") {
+        CfsTestAccess::handle_status(cfs,
+                                     make_cfs_notification(json{{"T1", k2_plus_t1_connected()}}));
+        check_not_single_spool(cfs);
+        CHECK(cfs.get_system_info().supports_bypass);
+    }
+}
+
+TEST_CASE("CFS decides nothing on an empty bus until printer.cfg has answered",
+          "[ams][cfs][bypass][1904][1933]") {
+    CfsRemapHelper cfs;
+    cfs.mark_running();
+    CfsTestAccess::await_unit_registration(cfs);
+    CfsTestAccess::handle_status(cfs, make_cfs_notification(make_empty_bus_box()));
+    feed_toolhead_filament(cfs);
+    check_not_single_spool(cfs);
+
+    SECTION("an answer of no unit settles it at once") {
+        CfsTestAccess::answer_unit_registration(cfs, no_unit_settings());
+        CHECK(cfs.get_system_info().external_spool_only);
+        CHECK(cfs.is_bypass_active());
+    }
+    SECTION("an answer naming a unit keeps waiting") {
+        CfsTestAccess::answer_unit_registration(cfs, registered_unit_settings());
+        check_not_single_spool(cfs);
+    }
+    SECTION("no answer at all still ends at the settle time") {
+        CfsTestAccess::expire_unit_settle(cfs);
+        CHECK(cfs.get_system_info().external_spool_only);
+    }
+}
+
+namespace {
+
+/// A CFS backend on a client that records its queries and answers none, so a
+/// test decides when the configfile answer lands.
+struct UnansweredClientCfs : AmsBackendCfs {
+    explicit UnansweredClientCfs(helix::IMoonrakerClient* c) : AmsBackendCfs(nullptr, c) {}
+    AmsError execute_gcode(const std::string& gcode) override {
+        captured.push_back(gcode);
+        return AmsErrorHelper::success();
+    }
+    void mark_running() {
+        running_ = true;
+    }
+    std::vector<std::string> captured;
+};
+
+long configfile_queries(const helix::test::FakeMoonrakerClient& client) {
+    return std::count_if(client.rpc_calls.begin(), client.rpc_calls.end(), [](const auto& c) {
+        return c.params.contains("objects") && c.params["objects"].contains("configfile");
+    });
+}
+
+} // namespace
+
+TEST_CASE("CFS with no registered unit stays single-spool across Refresh RFID and Comm test",
+          "[ams][cfs][bypass][1904][1933]") {
+    // Both actions re-query the box; neither is a new session, so neither may
+    // reopen the settle window or fetch the configfile again.
+    helix::test::FakeMoonrakerClient client;
+    UnansweredClientCfs cfs(&client);
+
+    CfsTestAccess::call_on_started(cfs);
+    REQUIRE(configfile_queries(client) == 1);
+    CfsTestAccess::answer_unit_registration(cfs, no_unit_settings());
+    CfsTestAccess::handle_status(cfs, make_cfs_notification(make_empty_bus_box()));
+    REQUIRE(cfs.get_system_info().external_spool_only);
+
+    for (const char* action : {"refresh_rfid", "comm_test"}) {
+        CAPTURE(action);
+        REQUIRE(cfs.execute_device_action(action, std::any{}).result == AmsResult::SUCCESS);
+        // The re-query's answer arrives as a full box frame.
+        CfsTestAccess::handle_status(cfs, make_cfs_notification(make_empty_bus_box()));
+        CHECK(cfs.get_system_info().external_spool_only);
+    }
+    CHECK(configfile_queries(client) == 1);
+}
+
+TEST_CASE("CFS with no registered unit stays single-spool across a Klipper restart",
+          "[ams][cfs][bypass][1904][1933]") {
+    helix::test::FakeMoonrakerClient client;
+    UnansweredClientCfs cfs(&client);
+    cfs.mark_running();
+    CfsTestAccess::call_on_started(cfs);
+    CfsTestAccess::answer_unit_registration(cfs, no_unit_settings());
+    CfsTestAccess::handle_status(cfs, make_cfs_notification(make_empty_bus_box()));
+    feed_toolhead_filament(cfs);
+    REQUIRE(cfs.get_system_info().external_spool_only);
+    REQUIRE(cfs.get_system_info().current_slot == helix::ui::kExternalSpoolSlot);
+
+    auto check_single_spool = [&cfs] {
+        const auto info = cfs.get_system_info();
+        CHECK(info.external_spool_only);
+        CHECK_FALSE(info.supports_bypass);
+        CHECK(info.current_slot == helix::ui::kExternalSpoolSlot);
+    };
+
+    // The configfile is asked again, and the frames of a Klipper start arrive
+    // before it answers: the box "None", then "disconnect".
+    cfs.on_klipper_restarted();
+    CHECK(configfile_queries(client) == 2);
+    CfsTestAccess::handle_status(cfs, make_cfs_notification(k2_plus_startup_box()));
+    feed_toolhead_filament(cfs);
+    check_single_spool();
+    CfsTestAccess::handle_status(cfs, make_cfs_notification(json{{"state", "disconnect"}}));
+    check_single_spool();
+
+    CfsTestAccess::answer_unit_registration(cfs, no_unit_settings());
+    check_single_spool();
+}
+
+TEST_CASE("CFS with a registered unit gets a new settle window on a Klipper restart",
+          "[ams][cfs][bypass][1904][1933]") {
+    helix::test::FakeMoonrakerClient client;
+    UnansweredClientCfs cfs(&client);
+    cfs.mark_running();
+    CfsTestAccess::call_on_started(cfs);
+    CfsTestAccess::answer_unit_registration(cfs, registered_unit_settings());
+    CfsTestAccess::handle_status(cfs, make_cfs_notification(make_empty_bus_box()));
+    CfsTestAccess::expire_unit_settle(cfs);
+    REQUIRE(cfs.get_system_info().external_spool_only);
+
+    // A SAVE_CONFIG restart may come with the unit plugged back in.
+    cfs.on_klipper_restarted();
+    CHECK(configfile_queries(client) == 2);
+    CfsTestAccess::handle_status(cfs, make_cfs_notification(make_empty_bus_box()));
+    CHECK_FALSE(cfs.get_system_info().external_spool_only);
+
+    SECTION("the unit answering ends the wait") {
+        CfsTestAccess::handle_status(cfs,
+                                     make_cfs_notification(json{{"T1", k2_plus_t1_connected()}}));
+        check_not_single_spool(cfs);
+    }
+    SECTION("the new window running out ends it single-spool again") {
+        CfsTestAccess::expire_unit_settle(cfs);
+        CHECK(cfs.get_system_info().external_spool_only);
     }
 }
 

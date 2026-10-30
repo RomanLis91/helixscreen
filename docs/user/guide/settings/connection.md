@@ -35,7 +35,7 @@ Opens the network screen. It has two columns.
 **Left: your connection**
 
 - **WiFi**: turn Wi-Fi on or off and see the network name, IP address, MAC address and signal strength. A **2.4GHz** tag appears if your hardware only supports that band.
-- **Country**, under the Wi-Fi switch, sets the Wi-Fi country. Until one is set, the Wi-Fi radio stays in a restricted worldwide mode and usually can't find 5 GHz networks until it has joined a 2.4 GHz one; the Country box then reads **2.4 GHz only** when your hardware supports 5 GHz. If your printer's system already set a country, it is shown here and left alone. Choose **Not set** to go back to the system's own setting. Hidden on printers where the printer's own network service manages Wi-Fi.
+- **Country**, under the Wi-Fi switch, sets the Wi-Fi country. Until one is set, the Wi-Fi radio stays in a restricted worldwide mode and usually can't find 5 GHz networks until it has joined a 2.4 GHz one; the Country box then reads **2.4 GHz only** when your hardware supports 5 GHz. The most common countries are listed first, then every country alphabetically. If your printer's system already set a country, it is shown here and left alone, and HelixScreen remembers it: if a firmware update later resets the radio to the worldwide mode, that country is set again at the next start. Choose **Not set** to go back to the system's own setting. Hidden on printers where the printer's own network service manages Wi-Fi.
 - **Ethernet**: the IP and MAC address of the wired connection. Read-only.
 - **Test Network**: checks that the internet is reachable. Grayed out when nothing is connected.
 
@@ -73,9 +73,10 @@ Host names are looked up again every time HelixScreen reconnects, so if your rou
 
 > Hidden on printers whose own firmware already shares the screen (the Snapmaker U1 with its stock screen page).
 
-Opens the **Screen Sharing** page:
+Opens the **Screen Sharing** page. Its settings belong to the printer you have selected, so each printer you control keeps its own:
 
-- **Share Screen** shows this screen live in a web browser, and as a **HelixScreen Screen** webcam in Mainsail and Fluidd.
+- **Share Screen** shows this screen live in a web browser.
+- **Add to Mainsail/Fluidd Webcams** also lists it as a **HelixScreen Screen** webcam in this printer's Mainsail and Fluidd. On unless you turn it off; it only matters while **Share Screen** is on.
 - **Allow Remote Control** lets a browser tap and drag on it.
 - **Pairing Code** and **Forget Paired Browsers** appear on printers where a browser needs a code before it can control the screen.
 

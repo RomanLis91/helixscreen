@@ -21,7 +21,9 @@
     "temperature",
     "target",
     "power",
-    "pressure_advance"
+    "pressure_advance",
+    "nozzle_diameter",
+    "nozzle_volume_type"
   ],
   "fan": [
     "speed"
@@ -58,6 +60,9 @@
     "live_position",
     "live_velocity",
     "live_extruder_velocity"
+  ],
+  "multi_color_controller": [
+    "box"
   ],
   "pause_resume": [
     "is_paused"
